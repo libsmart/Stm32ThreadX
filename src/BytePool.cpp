@@ -15,7 +15,7 @@ UINT BytePool::create(VOID *pool_start, ULONG pool_size) {
     CHAR bytePool_name[] = "Stm32ThreadX::BytePool";
 
     // Create the IP instance
-    ret = tx_byte_pool_create(this, bytePool_name, pool_start, pool_size);
+    ret = tx_byte_pool_create(bytePool, bytePool_name, pool_start, pool_size);
     if (ret != TX_SUCCESS) {
         log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)
                 ->printf("Byte pool creation failed. tx_byte_pool_create() = 0x%02x\r\n", ret);
@@ -24,6 +24,11 @@ UINT BytePool::create(VOID *pool_start, ULONG pool_size) {
     return ret;
 }
 
+void BytePool::setBytePoolStruct(TX_BYTE_POOL *txBytePool) {
+    bytePool = txBytePool;
+}
+
+
 UCHAR *BytePool::allocate(const ULONG memory_size) {
     log(Stm32ItmLogger::LoggerInterface::Severity::INFORMATIONAL)
             ->printf("Stm32ThreadX::BytePool::allocate(%d)\r\n", memory_size);
@@ -31,7 +36,7 @@ UCHAR *BytePool::allocate(const ULONG memory_size) {
     UINT ret = TX_SUCCESS;
     UCHAR *memPtr = nullptr;
 
-    ret = tx_byte_allocate(this,
+    ret = tx_byte_allocate(bytePool,
                            reinterpret_cast<void **>(&memPtr),
                            memory_size,
                            TX_NO_WAIT);
