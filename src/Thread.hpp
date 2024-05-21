@@ -28,10 +28,6 @@
 #include "TickTimer.hpp"
 
 namespace Stm32ThreadX {
-
-
-
-
     /**
      * @class thread
      *
@@ -45,7 +41,7 @@ namespace Stm32ThreadX {
         using threadEntry = void (*)(ULONG id);
         using id = std::uintptr_t;
 
-        ~Thread();
+        virtual ~Thread();
 
         /**
          * @brief Create a new thread.
@@ -270,7 +266,7 @@ namespace Stm32ThreadX {
                priority prio, const char *name) : Thread(nullptr, 0, func, param, prio, name) { ; }
 
         // Thread(threadEntry func, const char *name)
-            // : Thread(nullptr, 0, func, reinterpret_cast<ULONG>(this), priority(), name) { ; }
+        // : Thread(nullptr, 0, func, reinterpret_cast<ULONG>(this), priority(), name) { ; }
 
     private:
         Thread(const Thread &) = delete;
