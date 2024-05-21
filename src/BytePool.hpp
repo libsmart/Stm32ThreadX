@@ -8,15 +8,20 @@
 
 #include <libsmart_config.hpp>
 #include "Loggable.hpp"
+#include "Nameable.hpp"
 #include "tx_api.h"
 
 namespace Stm32ThreadX {
-    class BytePool : public Stm32ItmLogger::Loggable {
+    class BytePool : public Stm32ItmLogger::Loggable, public Stm32Common::Nameable {
     public:
         BytePool() = default;
 
         explicit BytePool(TX_BYTE_POOL *txBytePool)
-            : bytePool(txBytePool) {
+            : Nameable(txBytePool->tx_byte_pool_name), bytePool(txBytePool) {
+        }
+
+        explicit BytePool(const char *name)
+            : Nameable(name) {
         }
 
         UINT create(VOID *pool_start, ULONG pool_size);
@@ -33,6 +38,8 @@ namespace Stm32ThreadX {
          * @return A pointer to the allocated memory. Returns nullptr if allocation fails.
          */
         UCHAR *allocate(ULONG memory_size);
+
+        UINT release(VOID *memory_ptr);
 
     protected:
         TX_BYTE_POOL *bytePool = {};
