@@ -28,15 +28,36 @@ namespace Stm32ThreadX {
         EventFlags(const char *name, Stm32ItmLogger::LoggerInterface *logger)
             : Loggable(logger),
               Nameable(name),
-              TX_EVENT_FLAGS_GROUP_STRUCT() { ; }
+              TX_EVENT_FLAGS_GROUP_STRUCT() { create(); }
 
+        /**
+         * @brief Create an event flags group.
+         *
+         * This method creates an event flags group. Each event flags group contains 32 event flags. Each flag is
+         * represented by a single bit.
+         *
+         * @return The return value of the method. It can be one of the following:
+         *         - TX_SUCCESS: The event flags group was created successfully.
+         *         - Other error codes: If an error occurred while creating the event flags group.
+         *
+         * @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_event_flags_create
+         */
         UINT create();
 
+
+        /**
+         * @brief Delete an event flags group.
+         *
+         * This method deletes an event flags group. The event flags group and all associated resources are freed.
+         *
+         * @return The return value of the method. It can be one of the following:
+         *         - TX_SUCCESS: The event flags group was deleted successfully.
+         *         - Other error codes: If an error occurred while deleting the event flags group.
+         *
+         * @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_event_flags_delete
+         */
         UINT deleteFlags();
 
-        // enum class Flags : ULONG {
-        //     NONE = 0
-        // };
 
         using waitOption_t = union {
             /** Specifies the maximum number of timer-ticks to stay suspended while waiting for the event flags. */

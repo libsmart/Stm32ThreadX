@@ -15,6 +15,7 @@ UINT EventFlags::create() {
     log(Stm32ItmLogger::LoggerInterface::Severity::INFORMATIONAL)
             ->printf("Stm32ThreadX::EventFlags[%s]::create()\r\n", getName());
 
+    // @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_event_flags_create
     const auto ret = tx_event_flags_create(this, const_cast<char *>(getName()));
     if (ret != TX_SUCCESS) {
         log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)
@@ -28,12 +29,14 @@ UINT EventFlags::deleteFlags() {
     log(Stm32ItmLogger::LoggerInterface::Severity::INFORMATIONAL)
             ->printf("Stm32ThreadX::EventFlags[%s]::deleteFlags()\r\n", getName());
 
+    // @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_event_flags_delete
     const auto ret = tx_event_flags_delete(this);
     if (ret != TX_SUCCESS) {
         log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)
                 ->printf("Event flags group '%s' deletion failed. tx_event_flags_delete() = 0x%02x\r\n",
                          getName(), ret);
     }
+
     return ret;
 }
 
