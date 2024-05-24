@@ -40,12 +40,13 @@ UINT EventFlags::deleteFlags() {
     return ret;
 }
 
-UINT EventFlags::get(ULONG requestedFlags, getOption_t getOption, waitOption_t waitOption) {
+UINT EventFlags::get(const ULONG requestedFlags, getOption_t getOption, waitOption_t waitOption) {
     // log(Stm32ItmLogger::LoggerInterface::Severity::INFORMATIONAL)
     //         ->printf("Stm32ThreadX::EventFlags[%s]::get()\r\n", getName());
 
     actualFlags = 0;
 
+    // https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_event_flags_get
     const auto ret = tx_event_flags_get(
         this,
         requestedFlags,
@@ -61,42 +62,43 @@ UINT EventFlags::get(ULONG requestedFlags, getOption_t getOption, waitOption_t w
     return ret;
 }
 
-UINT EventFlags::get(ULONG requestedFlags) {
+UINT EventFlags::get(const ULONG requestedFlags) {
     return get(requestedFlags, getOption_t::AND, waitOption_t{waitOption_t::NO_WAIT});
 }
 
-ULONG EventFlags::getFlags(ULONG requestedFlags) {
-    get(requestedFlags, getOption_t::OR, waitOption_t{waitOption_t::NO_WAIT});
+ULONG EventFlags::getFlags() {
+    get(0, getOption_t::OR, waitOption_t{waitOption_t::NO_WAIT});
     return actualFlags;
 }
 
-bool EventFlags::isSet(ULONG requestedFlags) {
+bool EventFlags::isSet(const ULONG requestedFlags) {
     return isSet(requestedFlags, getOption_t::AND);
 }
 
-bool EventFlags::isSet(ULONG requestedFlags, getOption_t getOption) {
+bool EventFlags::isSet(const ULONG requestedFlags, const getOption_t getOption) {
     return get(requestedFlags, getOption, waitOption_t{waitOption_t::NO_WAIT}) == TX_SUCCESS;
 }
 
-UINT EventFlags::await(ULONG requestedFlags) {
-    return await(requestedFlags, waitOption_t{waitOption_t::WAIT_FOREVER});
+UINT EventFlags::await(const ULONG requestedFlags) {
+    return await(requestedFlags, getOption_t::AND, waitOption_t{waitOption_t::WAIT_FOREVER});
 }
 
-UINT EventFlags::await(ULONG requestedFlags, waitOption_t waitOption) {
+UINT EventFlags::await(const ULONG requestedFlags, const waitOption_t waitOption) {
     return await(requestedFlags, getOption_t::AND, waitOption);
 }
 
-UINT EventFlags::await(ULONG requestedFlags, getOption_t getOption, waitOption_t waitOption) {
+UINT EventFlags::await(const ULONG requestedFlags, const getOption_t getOption, const waitOption_t waitOption) {
     log(Stm32ItmLogger::LoggerInterface::Severity::INFORMATIONAL)
             ->printf("Stm32ThreadX::EventFlags[%s]::await(0x%08x)\r\n", getName(), requestedFlags);
 
     return get(requestedFlags, getOption, waitOption);
 }
 
-UINT EventFlags::set(ULONG flagsToSet, setOption_t setOption) {
+UINT EventFlags::set(const ULONG flagsToSet, setOption_t setOption) {
     log(Stm32ItmLogger::LoggerInterface::Severity::INFORMATIONAL)
             ->printf("Stm32ThreadX::EventFlags[%s]::set(0x%08x)\r\n", getName(), flagsToSet);
 
+    // @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_event_flags_set
     const auto ret = tx_event_flags_set(
         this,
         flagsToSet,

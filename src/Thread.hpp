@@ -36,7 +36,7 @@ namespace Stm32ThreadX {
      * This class provides a high-level interface to create and manage threads in the application.
      * It allows suspending, resuming, joining, and getting various properties of a thread.
      */
-    class Thread : private TX_THREAD {
+    class Thread : protected TX_THREAD {
     public:
         using threadEntry = void (*)(ULONG id);
         using id = std::uintptr_t;
