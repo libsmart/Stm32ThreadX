@@ -55,6 +55,26 @@ namespace Stm32ThreadX {
          */
         void createThread();
 
+        void createThread(const char *threadName);
+
+        void createThread(VOID *stack, ULONG stackSize);
+
+        void createThread(VOID *stack, ULONG stackSize, const char *threadName);
+
+
+        /**
+         * @brief Creates a new thread and resumes its execution.
+         *
+         * This method is a member of the Thread class and is used to create a new thread with the specified stack and
+         * stack size, and then resumes its execution. If the thread already exists (identified by its thread ID),
+         * this method does nothing.
+         *
+         * @param stack A pointer to the stack memory for the new thread.
+         * @param stackSize The size of the stack memory in bytes.
+         * @param threadName The name of the new thread.
+         */
+        void createAndResumeThread(VOID *stack, ULONG stackSize, const char *threadName);
+
         /**
          * @brief Suspends the execution of the current thread.
          *
@@ -117,7 +137,7 @@ namespace Stm32ThreadX {
          *
          * @return The name of the thread.
          */
-        const char *getName();
+        [[nodiscard]] const char *getName() const;
 
         /**
          * @enum state
@@ -257,10 +277,10 @@ namespace Stm32ThreadX {
 
         Thread(void *pstack, std::uint32_t stack_size,
                threadEntry func, ULONG param,
-               priority prio, const char *name) : TX_THREAD(), pstack(pstack), stack_size(stack_size),
-                                                  func(func),
-                                                  param(param),
-                                                  prio(prio), name(name) { ; }
+               priority prio, const char *threadName) : TX_THREAD(), threadName(threadName), pstack(pstack),
+                                                        stack_size(stack_size),
+                                                        func(func),
+                                                        param(param), prio(prio) { ; }
 
         Thread(threadEntry func, ULONG param,
                priority prio, const char *name) : Thread(nullptr, 0, func, param, prio, name) { ; }
@@ -282,7 +302,7 @@ namespace Stm32ThreadX {
         threadEntry func{};
         ULONG param{};
         priority prio{};
-        const char *name{};
+        const char *threadName{};
     };
 
 

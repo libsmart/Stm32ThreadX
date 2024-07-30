@@ -21,6 +21,8 @@
 
 #include <cassert>
 #include "Thread.hpp"
+
+#include "globals.hpp"
 #include "main.hpp"
 
 using namespace Stm32ThreadX;
@@ -30,9 +32,9 @@ void Thread::createThread() {
     // https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_thread_create
     assert_param(pstack != nullptr);
     assert_param(stack_size > 0);
-    auto result = tx_thread_create(
+    const volatile auto result = tx_thread_create(
         this, // TX_THREAD *thread_ptr
-        const_cast<char *>(name), // CHAR *name_ptr
+        const_cast<char *>(threadName), // CHAR *name_ptr
         func, // VOID (*entry_function)(ULONG id)
         param, // ULONG entry_input
         pstack, // VOID *stack_start
@@ -44,32 +46,61 @@ void Thread::createThread() {
     assert_param(result == TX_SUCCESS);
 }
 
+void Thread::createThread(const char *threadName) {
+    this->threadName = threadName;
+    createThread();
+}
+
+void Thread::createThread(VOID *stack, ULONG stackSize) {
+    this->setStack(stack, stackSize);
+    createThread();
+}
+
+void Thread::createThread(void *stack, ULONG stackSize, const char *threadName) {
+    this->setStack(stack, stackSize);
+    this->threadName = threadName;
+    createThread();
+}
+
+void Thread::createAndResumeThread(void *stack, ULONG stackSize, const char *threadName) {
+    if(tx_thread_id == 0) {
+        createThread(stack, stackSize, threadName);
+        resume();
+    }
+}
 
 Thread::~Thread() {
     if (tx_thread_state != TX_COMPLETED) {
-        const auto result = tx_thread_terminate(this);
+        const volatile auto result = tx_thread_terminate(this);
         assert_param(result == TX_SUCCESS);
     }
-    const auto result = tx_thread_delete(this);
+    const volatile auto result = tx_thread_delete(this);
     assert_param(result == TX_SUCCESS);
 }
 
 
 void Thread::suspend() {
-    tx_thread_suspend(this);
+    // https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_thread_suspend
+    const volatile auto result = tx_thread_suspend(this);
+    assert_param(result == TX_SUCCESS);
 }
 
 void Thread::resume() {
-    const auto result = tx_thread_resume(this);
+    // https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_thread_resume
+    const volatile auto result = tx_thread_resume(this);
     assert_param(result == TX_SUCCESS);
 }
 
 void Thread::terminate() {
-    tx_thread_terminate(this);
+    // https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_thread_terminate
+    const volatile auto result = tx_thread_terminate(this);
+    assert_param(result == TX_SUCCESS);
 }
 
 void Thread::reset() {
-    tx_thread_reset(this);
+    // https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_thread_reset
+    const volatile auto result = tx_thread_reset(this);
+    assert_param(result == TX_SUCCESS);
 }
 
 Thread::priority Thread::getPriority() const {
@@ -92,10 +123,9 @@ Thread::id Thread::getId() const {
     return id(this);
 }
 
-const char *Thread::getName() {
-    return const_cast<const char *>(tx_thread_name);
+const char *Thread::getName() const {
+    return threadName;
 }
-
 
 Thread::state Thread::getState() const {
     state s;
