@@ -27,6 +27,7 @@
 #include <functional>
 #include "Helper.hpp"
 #include "RunOnce.hpp"
+#include "Stm32ThreadX.hpp"
 #include "Thread.hpp"
 
 namespace Stm32ThreadX {
@@ -36,7 +37,7 @@ namespace Stm32ThreadX {
             : RunThreadOnce(0) { ; }
 
         explicit RunThreadOnce(uint32_t delay_ms)
-            : Thread(Stm32ThreadX::BOUNCE(RunThreadOnce, loopThread),
+            : Thread(BOUNCE(RunThreadOnce, loopThread),
                      reinterpret_cast<ULONG>(this), Thread::priority(),
                      "Stm32ThreadX::RunThreadEvery"),
               RunOnce(delay_ms) { ; }
@@ -46,7 +47,7 @@ namespace Stm32ThreadX {
             : RunThreadOnce(0, fn) { ; }
 
         RunThreadOnce(uint32_t delay_ms, const fn_t &fn)
-            : Thread(Stm32ThreadX::BOUNCE(RunThreadOnce, loopThread),
+            : Thread(BOUNCE(RunThreadOnce, loopThread),
                      reinterpret_cast<ULONG>(this), Thread::priority(),
                      "Stm32ThreadX::RunThreadOnce"),
               RunOnce(delay_ms, fn) { ; }
