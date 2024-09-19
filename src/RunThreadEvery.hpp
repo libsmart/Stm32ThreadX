@@ -28,6 +28,7 @@
 #include <functional>
 #include "Helper.hpp"
 #include "RunEvery.hpp"
+#include "Stm32ThreadX.hpp"
 #include "Thread.hpp"
 
 namespace Stm32ThreadX {
@@ -40,7 +41,7 @@ namespace Stm32ThreadX {
             : RunThreadEvery(interval_ms, delay_ms, 0) { ; }
 
         RunThreadEvery(uint32_t interval_ms, uint32_t delay_ms, uint32_t run_count_max)
-            : Thread(Stm32ThreadX::BOUNCE(RunThreadEvery, loopThread),
+            : Thread(BOUNCE(RunThreadEvery, loopThread),
                      reinterpret_cast<ULONG>(this), Thread::priority(),
                      "Stm32ThreadX::RunThreadEvery"),
               RunEvery(interval_ms, delay_ms, run_count_max) { ; }
@@ -56,7 +57,7 @@ namespace Stm32ThreadX {
             : RunThreadEvery(interval_ms, delay_ms, 0, fn) { ; }
 
         RunThreadEvery(uint32_t interval_ms, uint32_t delay_ms, uint32_t run_count_max, const fn_t &fn)
-            : Thread(Stm32ThreadX::BOUNCE(RunThreadEvery, loopThread),
+            : Thread(BOUNCE(RunThreadEvery, loopThread),
                      reinterpret_cast<ULONG>(this), Thread::priority(),
                      "Stm32ThreadX::RunThreadEvery"),
               RunEvery(interval_ms, delay_ms, run_count_max, fn) { ; }
