@@ -4,8 +4,8 @@
  */
 
 #include "BaseQueue.hpp"
-
 #include <ctime>
+
 #if __EXCEPTIONS
 #include <stdexcept>
 #endif
