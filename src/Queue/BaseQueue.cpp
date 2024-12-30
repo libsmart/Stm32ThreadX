@@ -14,7 +14,7 @@ using namespace Stm32ThreadX;
 
 UINT BaseQueue::create(CHAR *name_ptr, UINT message_size, void *queue_start, ULONG queue_size) {
     log(Stm32ItmLogger::LoggerInterface::Severity::DEBUGGING)
-            ->printf("Stm32ThreadX::BaseQueue[%s]::create(\"%s\", %d, 0x%p, %lu)\r\n",
+            ->printf("Stm32ThreadX::BaseQueue[%s]::create(\"%s\", %d, %p, %lu)\r\n",
                      getName(), name_ptr, message_size, queue_start, queue_size);
 
     // @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_queue_create
@@ -80,7 +80,7 @@ UINT BaseQueue::flush() {
 
 UINT BaseQueue::front_send(void *source_ptr, ULONG wait_option) {
     log(Stm32ItmLogger::LoggerInterface::Severity::DEBUGGING)
-            ->printf("Stm32ThreadX::BaseQueue[%s]::front_send(0x%p, %lu)\r\n",
+            ->printf("Stm32ThreadX::BaseQueue[%s]::front_send(%p, %lu)\r\n",
                      getName(), source_ptr, wait_option);
 
     // @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_queue_front_send
@@ -131,7 +131,8 @@ UINT BaseQueue::info_get(CHAR **name, ULONG *enqueued, ULONG *available_storage,
     return ret;
 }
 
-/*
+
+#if defined(TX_QUEUE_ENABLE_PERFORMANCE_INFO)
 UINT BaseQueue::performance_info_get(ULONG *messages_sent, ULONG *messages_received, ULONG *empty_suspensions,
                                      ULONG *full_suspensions, ULONG *full_errors, ULONG *timeouts) {
     log(Stm32ItmLogger::LoggerInterface::Severity::DEBUGGING)
@@ -160,9 +161,8 @@ UINT BaseQueue::performance_info_get(ULONG *messages_sent, ULONG *messages_recei
     }
     return ret;
 }
-*/
 
-/*
+
 UINT BaseQueue::performance_system_info_get(ULONG *messages_sent, ULONG *messages_received, ULONG *empty_suspensions,
                                             ULONG *full_suspensions, ULONG *full_errors, ULONG *timeouts) {
     log(Stm32ItmLogger::LoggerInterface::Severity::DEBUGGING)
@@ -190,7 +190,8 @@ UINT BaseQueue::performance_system_info_get(ULONG *messages_sent, ULONG *message
     }
     return ret;
 }
-*/
+#endif
+
 
 UINT BaseQueue::prioritize() {
     log(Stm32ItmLogger::LoggerInterface::Severity::DEBUGGING)
@@ -216,7 +217,7 @@ UINT BaseQueue::prioritize() {
 
 UINT BaseQueue::receive(void *destination_ptr, ULONG wait_option) {
     // log(Stm32ItmLogger::LoggerInterface::Severity::DEBUGGING)
-            // ->printf("Stm32ThreadX::BaseQueue[%s]::receive(0x%p, %lu)\r\n",
+            // ->printf("Stm32ThreadX::BaseQueue[%s]::receive(%p, %lu)\r\n",
                      // getName(), destination_ptr, wait_option);
 
     // @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_queue_receive
@@ -240,7 +241,7 @@ UINT BaseQueue::receive(void *destination_ptr, ULONG wait_option) {
 
 UINT BaseQueue::send(void *source_ptr, ULONG wait_option) {
     log(Stm32ItmLogger::LoggerInterface::Severity::DEBUGGING)
-            ->printf("Stm32ThreadX::BaseQueue[%s]::send(0x%p, %lu)\r\n",
+            ->printf("Stm32ThreadX::BaseQueue[%s]::send(%p, %lu)\r\n",
                      getName(), source_ptr, wait_option);
 
     // @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_queue_send
@@ -264,7 +265,7 @@ UINT BaseQueue::send(void *source_ptr, ULONG wait_option) {
 
 UINT BaseQueue::send_notify(send_notify_callback queue_send_notify) {
     log(Stm32ItmLogger::LoggerInterface::Severity::DEBUGGING)
-            ->printf("Stm32ThreadX::BaseQueue[%s]::send(0x%p)\r\n",
+            ->printf("Stm32ThreadX::BaseQueue[%s]::send(%p)\r\n",
                      getName(), queue_send_notify);
 
     // @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_queue_send_notify

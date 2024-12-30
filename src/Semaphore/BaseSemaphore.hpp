@@ -98,6 +98,7 @@ namespace Stm32ThreadX {
                               ULONG *suspended_count,
                               TX_SEMAPHORE **next_semaphore);
 
+#if defined(TX_SEMAPHORE_ENABLE_PERFORMANCE_INFO)
         /**
          * @brief Retrieves performance statistics for the semaphore.
          *
@@ -113,7 +114,7 @@ namespace Stm32ThreadX {
          * @return A UINT value that indicates the success or error code of the operation.
          *         Returns NX_SUCCESS if successful; otherwise, returns an appropriate error code.
          */
-        // virtual UINT performance_info_get(ULONG *puts, ULONG *gets, ULONG *suspensions, ULONG *timeouts);
+        virtual UINT performance_info_get(ULONG *puts, ULONG *gets, ULONG *suspensions, ULONG *timeouts);
 
         /**
          * @brief Retrieves performance system information for the semaphore.
@@ -130,7 +131,8 @@ namespace Stm32ThreadX {
          * @return A UINT value representing the success or error code of the operation.
          *         Returns NX_SUCCESS if the performance information is successfully retrieved, otherwise an error code.
          */
-        // virtual UINT performance_system_info_get(ULONG *puts, ULONG *gets, ULONG *suspensions, ULONG *timeouts);
+        virtual UINT performance_system_info_get(ULONG *puts, ULONG *gets, ULONG *suspensions, ULONG *timeouts);
+#endif
 
         /**
          * @brief Prioritize semaphore suspension list.

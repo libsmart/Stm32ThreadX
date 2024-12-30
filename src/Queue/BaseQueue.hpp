@@ -107,6 +107,7 @@ namespace Stm32ThreadX {
         virtual UINT info_get(CHAR **name, ULONG *enqueued, ULONG *available_storage, TX_THREAD **first_suspended,
                               ULONG *suspended_count, TX_QUEUE **next_queue);
 
+#if defined(TX_QUEUE_ENABLE_PERFORMANCE_INFO)
         /**
          * @brief Retrieves information on queue operation performance.
          *
@@ -127,10 +128,8 @@ namespace Stm32ThreadX {
          * @return Returns a UINT status code indicating the result of the operation. NX_SUCCESS is returned
          * if the operation is successful; otherwise, an error code is returned.
          */
-        /*
         virtual UINT performance_info_get(ULONG *messages_sent, ULONG *messages_received, ULONG *empty_suspensions,
                                           ULONG *full_suspensions, ULONG *full_errors, ULONG *timeouts);
-                                          */
 
         /**
          * @brief Retrieves performance information on system-wide queue operations.
@@ -154,11 +153,10 @@ namespace Stm32ThreadX {
          * of the operation. The possible return values include NX_SUCCESS if the operation
          * is successful, or an error code if the operation fails.
          */
-        /*
         virtual UINT performance_system_info_get(ULONG *messages_sent, ULONG *messages_received,
                                                  ULONG *empty_suspensions, ULONG *full_suspensions, ULONG *full_errors,
                                                  ULONG *timeouts);
-                                                 */
+#endif
 
         /**
          * @brief Prioritize queue suspension list.

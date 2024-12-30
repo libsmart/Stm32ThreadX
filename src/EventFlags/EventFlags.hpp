@@ -6,10 +6,11 @@
 #ifndef LIBSMART_STM32THREADX_EVENTFLAGS_HPP
 #define LIBSMART_STM32THREADX_EVENTFLAGS_HPP
 
-#include <libsmart_config.hpp>
-#include "Loggable.hpp"
-#include "Nameable.hpp"
-#include "tx_api.h"
+#include <../../../../Application/libsmart_config.hpp>
+#include "../../../Stm32ItmLogger/src/Loggable.hpp"
+#include "../../../Stm32Common/src/Nameable.hpp"
+#include "../../../../Middlewares/ST/threadx/common/inc/tx_api.h"
+#include "BaseEventFlags.hpp"
 
 namespace Stm32ThreadX {
     /**
@@ -21,53 +22,25 @@ namespace Stm32ThreadX {
      *
      * @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter3.md#event-flags
      */
-    class EventFlags : public Stm32ItmLogger::Loggable, public Stm32Common::Nameable, public TX_EVENT_FLAGS_GROUP {
+    class EventFlags : public BaseEventFlags {
     public:
-        ~EventFlags() override;
-
-        EventFlags()
-            : EventFlags(nullptr, &Stm32ItmLogger::emptyLogger) { ; }
+        EventFlags() = default;
 
         explicit EventFlags(Stm32ItmLogger::LoggerInterface *logger)
-            : EventFlags(nullptr, logger) { ; }
+            : BaseEventFlags(logger) { ; }
 
         explicit EventFlags(const char *name)
-            : EventFlags(name, &Stm32ItmLogger::emptyLogger) { ; }
+            : BaseEventFlags(name, &Stm32ItmLogger::emptyLogger) { ; }
 
         EventFlags(const char *name, Stm32ItmLogger::LoggerInterface *logger)
-            : Loggable(logger),
-              Nameable(name),
-              TX_EVENT_FLAGS_GROUP_STRUCT() { create(); }
+            : BaseEventFlags(name, logger) { ; }
 
 
-        /**
-         * @brief Create an event flags group.
-         *
-         * This method creates an event flags group. Each event flags group contains 32 event flags. Each flag is
-         * represented by a single bit.
-         *
-         * @return The return value of the method. It can be one of the following:
-         *         - TX_SUCCESS: The event flags group was created successfully.
-         *         - Other error codes: If an error occurred while creating the event flags group.
-         *
-         * @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_event_flags_create
-         */
         UINT create();
 
+        using BaseEventFlags::create;
 
-        /**
-         * @brief Delete an event flags group.
-         *
-         * This method deletes an event flags group. The event flags group and all associated resources are freed.
-         *
-         * @return The return value of the method. It can be one of the following:
-         *         - TX_SUCCESS: The event flags group was deleted successfully.
-         *         - Other error codes: If an error occurred while deleting the event flags group.
-         *
-         * @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_event_flags_delete
-         */
         UINT deleteFlags();
-
 
         /**
          * @union waitOption_t
@@ -164,6 +137,7 @@ namespace Stm32ThreadX {
          */
         UINT get(ULONG requestedFlags);
 
+        using BaseEventFlags::get;
 
         /**
          * @brief Retrieve the current state of the event flags.

@@ -115,7 +115,7 @@ UINT BaseSemaphore::info_get(CHAR **name, ULONG *current_value, TX_THREAD **firs
     return ret;
 }
 
-/*
+#if defined(TX_SEMAPHORE_ENABLE_PERFORMANCE_INFO)
 UINT BaseSemaphore::performance_info_get(ULONG *puts, ULONG *gets, ULONG *suspensions, ULONG *timeouts) {
     log(Stm32ItmLogger::LoggerInterface::Severity::DEBUGGING)
             ->printf("Stm32ThreadX::BaseSemaphore[%s]::performance_info_get()\r\n", getName());
@@ -134,9 +134,8 @@ UINT BaseSemaphore::performance_info_get(ULONG *puts, ULONG *gets, ULONG *suspen
     }
     return ret;
 }
-*/
 
-/*
+
 UINT BaseSemaphore::performance_system_info_get(ULONG *puts, ULONG *gets, ULONG *suspensions, ULONG *timeouts) {
     log(Stm32ItmLogger::LoggerInterface::Severity::DEBUGGING)
             ->printf("Stm32ThreadX::BaseSemaphore[%s]::performance_system_info_get()\r\n", getName());
@@ -155,7 +154,7 @@ UINT BaseSemaphore::performance_system_info_get(ULONG *puts, ULONG *gets, ULONG 
     }
     return ret;
 }
-*/
+#endif
 
 UINT BaseSemaphore::prioritize() {
     log(Stm32ItmLogger::LoggerInterface::Severity::DEBUGGING)
