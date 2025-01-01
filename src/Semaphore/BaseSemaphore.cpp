@@ -7,6 +7,21 @@
 
 #if __EXCEPTIONS
 #include <stdexcept>
+#define LIBSMART_HANDLE_ERROR(fmt, ...)                                          \
+do {                                                                    \
+char buffer[snprintf(nullptr, 0, fmt, __VA_ARGS__) + 1]{};              \
+snprintf(buffer, sizeof(buffer), fmt, __VA_ARGS__);                     \
+log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)->println(buffer); \
+throw std::runtime_error(buffer);                                       \
+} while (0);
+#else
+#define LIBSMART_HANDLE_ERROR(fmt, ...)                                          \
+do {                                                                    \
+char buffer[snprintf(nullptr, 0, fmt, __VA_ARGS__) + 1]{};              \
+snprintf(buffer, sizeof(buffer), fmt, __VA_ARGS__);                     \
+log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)->println(buffer); \
+return ret;                                                             \
+} while (0);
 #endif
 
 using namespace Stm32ThreadX;
@@ -24,13 +39,8 @@ UINT BaseSemaphore::create(CHAR *name_ptr, ULONG initial_count) {
     );
 
     if (ret != NX_SUCCESS) {
-        log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)
-                ->printf("Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_create() = 0x%02x\r\n",
-                         getName(), ret);
-#if __EXCEPTIONS
-        throw std::runtime_error("tx_semaphore_create() failed");
-#endif
-        return ret;
+        constexpr char fmt[] = "Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_create() = 0x%02x";
+        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
     return ret;
 }
@@ -45,13 +55,8 @@ UINT BaseSemaphore::del() {
     std::memset(static_cast<TX_SEMAPHORE *>(this), 0, sizeof(TX_SEMAPHORE));
 
     if (ret != NX_SUCCESS) {
-        log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)
-                ->printf("Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_delete() = 0x%02x\r\n",
-                         getName(), ret);
-#if __EXCEPTIONS
-        throw std::runtime_error("tx_semaphore_delete() failed");
-#endif
-        return ret;
+        constexpr char fmt[] = "Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_delete() = 0x%02x";
+        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
     return ret;
 }
@@ -64,13 +69,8 @@ UINT BaseSemaphore::ceiling_put(ULONG ceiling) {
     const auto ret = tx_semaphore_ceiling_put(this, ceiling);
 
     if (ret != NX_SUCCESS) {
-        log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)
-                ->printf("Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_ceiling_put() = 0x%02x\r\n",
-                         getName(), ret);
-#if __EXCEPTIONS
-        throw std::runtime_error("tx_semaphore_ceiling_put() failed");
-#endif
-        return ret;
+        constexpr char fmt[] = "Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_ceiling_put() = 0x%02x";
+        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
     return ret;
 }
@@ -83,13 +83,8 @@ UINT BaseSemaphore::get(ULONG wait_option) {
     const auto ret = tx_semaphore_get(this, wait_option);
 
     if (ret != NX_SUCCESS) {
-        log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)
-                ->printf("Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_get() = 0x%02x\r\n",
-                         getName(), ret);
-#if __EXCEPTIONS
-        throw std::runtime_error("tx_semaphore_get() failed");
-#endif
-        return ret;
+        constexpr char fmt[] = "Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_get() = 0x%02x";
+        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
     return ret;
 }
@@ -104,13 +99,8 @@ UINT BaseSemaphore::info_get(CHAR **name, ULONG *current_value, TX_THREAD **firs
                                            first_suspended, suspended_count, next_semaphore);
 
     if (ret != NX_SUCCESS) {
-        log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)
-                ->printf("Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_info_get() = 0x%02x\r\n",
-                         getName(), ret);
-#if __EXCEPTIONS
-        throw std::runtime_error("tx_semaphore_info_get() failed");
-#endif
-        return ret;
+        constexpr char fmt[] = "Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_info_get() = 0x%02x";
+        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
     return ret;
 }
@@ -124,13 +114,8 @@ UINT BaseSemaphore::performance_info_get(ULONG *puts, ULONG *gets, ULONG *suspen
     const auto ret = tx_semaphore_performance_info_get(this, puts, gets, suspensions, timeouts);
 
     if (ret != NX_SUCCESS) {
-        log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)
-                ->printf("Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_performance_info_get() = 0x%02x\r\n",
-                         getName(), ret);
-#if __EXCEPTIONS
-        throw std::runtime_error("tx_semaphore_performance_info_get() failed");
-#endif
-        return ret;
+        constexpr char fmt[] = "Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_performance_info_get() = 0x%02x";
+        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
     return ret;
 }
@@ -144,13 +129,8 @@ UINT BaseSemaphore::performance_system_info_get(ULONG *puts, ULONG *gets, ULONG 
     const auto ret = tx_semaphore_performance_system_info_get(puts, gets, suspensions, timeouts);
 
     if (ret != NX_SUCCESS) {
-        log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)
-                ->printf("Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_performance_system_info_get() = 0x%02x\r\n",
-                         getName(), ret);
-#if __EXCEPTIONS
-        throw std::runtime_error("tx_semaphore_performance_system_info_get() failed");
-#endif
-        return ret;
+        constexpr char fmt[] = "Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_performance_system_info_get() = 0x%02x";
+        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
     return ret;
 }
@@ -164,13 +144,8 @@ UINT BaseSemaphore::prioritize() {
     const auto ret = tx_semaphore_prioritize(this);
 
     if (ret != NX_SUCCESS) {
-        log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)
-                ->printf("Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_prioritize() = 0x%02x\r\n",
-                         getName(), ret);
-#if __EXCEPTIONS
-        throw std::runtime_error("tx_semaphore_prioritize() failed");
-#endif
-        return ret;
+        constexpr char fmt[] = "Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_prioritize() = 0x%02x";
+        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
     return ret;
 }
@@ -183,13 +158,8 @@ UINT BaseSemaphore::put() {
     const auto ret = tx_semaphore_put(this);
 
     if (ret != NX_SUCCESS) {
-        log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)
-                ->printf("Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_put() = 0x%02x\r\n",
-                         getName(), ret);
-#if __EXCEPTIONS
-        throw std::runtime_error("tx_semaphore_put() failed");
-#endif
-        return ret;
+        constexpr char fmt[] = "Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_put() = 0x%02x";
+        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
     return ret;
 }
@@ -202,13 +172,8 @@ UINT BaseSemaphore::put_notify(semaphore_put_notify_callback semaphore_put_notif
     const auto ret = tx_semaphore_put_notify(this, semaphore_put_notify);
 
     if (ret != NX_SUCCESS) {
-        log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)
-                ->printf("Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_put_notify() = 0x%02x\r\n",
-                         getName(), ret);
-#if __EXCEPTIONS
-        throw std::runtime_error("tx_semaphore_put_notify() failed");
-#endif
-        return ret;
+        constexpr char fmt[] = "Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_put_notify() = 0x%02x";
+        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
     return ret;
 }

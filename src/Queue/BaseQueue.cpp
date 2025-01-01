@@ -8,6 +8,21 @@
 
 #if __EXCEPTIONS
 #include <stdexcept>
+#define LIBSMART_HANDLE_ERROR(fmt, ...)                                          \
+do {                                                                    \
+char buffer[snprintf(nullptr, 0, fmt, __VA_ARGS__) + 1]{};              \
+snprintf(buffer, sizeof(buffer), fmt, __VA_ARGS__);                     \
+log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)->println(buffer); \
+throw std::runtime_error(buffer);                                       \
+} while (0);
+#else
+#define LIBSMART_HANDLE_ERROR(fmt, ...)                                          \
+do {                                                                    \
+char buffer[snprintf(nullptr, 0, fmt, __VA_ARGS__) + 1]{};              \
+snprintf(buffer, sizeof(buffer), fmt, __VA_ARGS__);                     \
+log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)->println(buffer); \
+return ret;                                                             \
+} while (0);
 #endif
 
 using namespace Stm32ThreadX;
@@ -27,13 +42,8 @@ UINT BaseQueue::create(CHAR *name_ptr, UINT message_size, void *queue_start, ULO
     );
 
     if (ret != NX_SUCCESS) {
-        log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)
-                ->printf("Stm32ThreadX::BaseQueue[%s]: tx_queue_create() = 0x%02x\r\n",
-                         getName(), ret);
-#if __EXCEPTIONS
-        throw std::runtime_error("tx_queue_create() failed");
-#endif
-        return ret;
+        constexpr char fmt[] = "Stm32ThreadX::BaseQueue[%s]: tx_queue_create() = 0x%02x";
+        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
     return ret;
 }
@@ -48,13 +58,8 @@ UINT BaseQueue::del() {
     std::memset(static_cast<TX_QUEUE *>(this), 0, sizeof(TX_QUEUE));
 
     if (ret != NX_SUCCESS) {
-        log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)
-                ->printf("Stm32ThreadX::BaseQueue[%s]: tx_queue_delete() = 0x%02x\r\n",
-                         getName(), ret);
-#if __EXCEPTIONS
-        throw std::runtime_error("tx_queue_delete() failed");
-#endif
-        return ret;
+        constexpr char fmt[] = "Stm32ThreadX::BaseQueue[%s]: tx_queue_delete() = 0x%02x";
+        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
     return ret;
 }
@@ -67,13 +72,8 @@ UINT BaseQueue::flush() {
     const auto ret = tx_queue_flush(this);
 
     if (ret != NX_SUCCESS) {
-        log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)
-                ->printf("Stm32ThreadX::BaseQueue[%s]: tx_queue_flush() = 0x%02x\r\n",
-                         getName(), ret);
-#if __EXCEPTIONS
-        throw std::runtime_error("tx_queue_flush() failed");
-#endif
-        return ret;
+        constexpr char fmt[] = "Stm32ThreadX::BaseQueue[%s]: tx_queue_flush() = 0x%02x";
+        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
     return ret;
 }
@@ -91,13 +91,8 @@ UINT BaseQueue::front_send(void *source_ptr, ULONG wait_option) {
     );
 
     if (ret != NX_SUCCESS) {
-        log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)
-                ->printf("Stm32ThreadX::BaseQueue[%s]: tx_queue_front_send() = 0x%02x\r\n",
-                         getName(), ret);
-#if __EXCEPTIONS
-        throw std::runtime_error("tx_queue_front_send() failed");
-#endif
-        return ret;
+        constexpr char fmt[] = "Stm32ThreadX::BaseQueue[%s]: tx_queue_front_send() = 0x%02x";
+        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
     return ret;
 }
@@ -120,13 +115,8 @@ UINT BaseQueue::info_get(CHAR **name, ULONG *enqueued, ULONG *available_storage,
     );
 
     if (ret != NX_SUCCESS) {
-        log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)
-                ->printf("Stm32ThreadX::BaseQueue[%s]: tx_queue_info_get() = 0x%02x\r\n",
-                         getName(), ret);
-#if __EXCEPTIONS
-        throw std::runtime_error("tx_queue_info_get() failed");
-#endif
-        return ret;
+        constexpr char fmt[] = "Stm32ThreadX::BaseQueue[%s]: tx_queue_info_get() = 0x%02x";
+        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
     return ret;
 }
@@ -151,13 +141,8 @@ UINT BaseQueue::performance_info_get(ULONG *messages_sent, ULONG *messages_recei
     );
 
     if (ret != NX_SUCCESS) {
-        log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)
-                ->printf("Stm32ThreadX::BaseQueue[%s]: tx_queue_performance_info_get() = 0x%02x\r\n",
-                         getName(), ret);
-#if __EXCEPTIONS
-        throw std::runtime_error("tx_queue_performance_info_get() failed");
-#endif
-        return ret;
+        constexpr char fmt[] = "Stm32ThreadX::BaseQueue[%s]: tx_queue_performance_info_get() = 0x%02x";
+        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
     return ret;
 }
@@ -180,13 +165,8 @@ UINT BaseQueue::performance_system_info_get(ULONG *messages_sent, ULONG *message
     );
 
     if (ret != NX_SUCCESS) {
-        log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)
-                ->printf("Stm32ThreadX::BaseQueue[%s]: tx_queue_performance_system_info_get() = 0x%02x\r\n",
-                         getName(), ret);
-#if __EXCEPTIONS
-        throw std::runtime_error("tx_queue_performance_system_info_get() failed");
-#endif
-        return ret;
+        constexpr char fmt[] = "Stm32ThreadX::BaseQueue[%s]: tx_queue_performance_system_info_get() = 0x%02x";
+        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
     return ret;
 }
@@ -204,13 +184,8 @@ UINT BaseQueue::prioritize() {
     );
 
     if (ret != NX_SUCCESS) {
-        log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)
-                ->printf("Stm32ThreadX::BaseQueue[%s]: tx_queue_prioritize() = 0x%02x\r\n",
-                         getName(), ret);
-#if __EXCEPTIONS
-        throw std::runtime_error("tx_queue_prioritize() failed");
-#endif
-        return ret;
+        constexpr char fmt[] = "Stm32ThreadX::BaseQueue[%s]: tx_queue_prioritize() = 0x%02x";
+        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
     return ret;
 }
@@ -228,13 +203,8 @@ UINT BaseQueue::receive(void *destination_ptr, ULONG wait_option) {
     );
 
     if (ret != NX_SUCCESS && ret != TX_DELETED && ret != TX_QUEUE_EMPTY && ret != TX_WAIT_ABORTED) {
-        log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)
-                ->printf("Stm32ThreadX::BaseQueue[%s]: tx_queue_receive() = 0x%02x\r\n",
-                         getName(), ret);
-#if __EXCEPTIONS
-        throw std::runtime_error("tx_queue_receive() failed");
-#endif
-        return ret;
+        constexpr char fmt[] = "Stm32ThreadX::BaseQueue[%s]: tx_queue_receive() = 0x%02x";
+        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
     return ret;
 }
@@ -252,13 +222,8 @@ UINT BaseQueue::send(void *source_ptr, ULONG wait_option) {
     );
 
     if (ret != NX_SUCCESS) {
-        log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)
-                ->printf("Stm32ThreadX::BaseQueue[%s]: tx_queue_send() = 0x%02x\r\n",
-                         getName(), ret);
-#if __EXCEPTIONS
-        throw std::runtime_error("tx_queue_send() failed");
-#endif
-        return ret;
+        constexpr char fmt[] = "Stm32ThreadX::BaseQueue[%s]: tx_queue_send() = 0x%02x";
+        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
     return ret;
 }
@@ -275,13 +240,8 @@ UINT BaseQueue::send_notify(send_notify_callback queue_send_notify) {
     );
 
     if (ret != NX_SUCCESS) {
-        log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)
-                ->printf("Stm32ThreadX::BaseQueue[%s]: tx_queue_send_notify() = 0x%02x\r\n",
-                         getName(), ret);
-#if __EXCEPTIONS
-        throw std::runtime_error("tx_queue_send_notify() failed");
-#endif
-        return ret;
+        constexpr char fmt[] = "Stm32ThreadX::BaseQueue[%s]: tx_queue_send_notify() = 0x%02x";
+        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
     return ret;
 }

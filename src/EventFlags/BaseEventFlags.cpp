@@ -4,8 +4,24 @@
  */
 
 #include "BaseEventFlags.hpp"
+
 #if __EXCEPTIONS
 #include <stdexcept>
+#define LIBSMART_HANDLE_ERROR(fmt, ...)                                          \
+do {                                                                    \
+char buffer[snprintf(nullptr, 0, fmt, __VA_ARGS__) + 1]{};              \
+snprintf(buffer, sizeof(buffer), fmt, __VA_ARGS__);                     \
+log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)->println(buffer); \
+throw std::runtime_error(buffer);                                       \
+} while (0);
+#else
+#define LIBSMART_HANDLE_ERROR(fmt, ...)                                          \
+do {                                                                    \
+char buffer[snprintf(nullptr, 0, fmt, __VA_ARGS__) + 1]{};              \
+snprintf(buffer, sizeof(buffer), fmt, __VA_ARGS__);                     \
+log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)->println(buffer); \
+return ret;                                                             \
+} while (0);
 #endif
 
 using namespace Stm32ThreadX;
@@ -21,13 +37,7 @@ UINT BaseEventFlags::create(CHAR *name_ptr) {
 
     if (ret != NX_SUCCESS) {
         constexpr char fmt[] = "Stm32ThreadX::BaseEventFlags[%s]: tx_event_flags_create() = 0x%02x";
-        char buffer[snprintf(nullptr, 0, fmt, getName(), ret) + 1]{};
-        snprintf(buffer, sizeof(buffer), fmt, getName(), ret);
-        log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)->println(buffer);
-#if __EXCEPTIONS
-        throw std::runtime_error(buffer);
-#endif
-        return ret;
+        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
     return ret;
 }
@@ -43,13 +53,7 @@ UINT BaseEventFlags::del() {
 
     if (ret != NX_SUCCESS) {
         constexpr char fmt[] = "Stm32ThreadX::BaseEventFlags[%s]: tx_event_flags_delete() = 0x%02x";
-        char buffer[snprintf(nullptr, 0, fmt, getName(), ret) + 1]{};
-        snprintf(buffer, sizeof(buffer), fmt, getName(), ret);
-        log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)->println(buffer);
-#if __EXCEPTIONS
-        throw std::runtime_error(buffer);
-#endif
-        return ret;
+        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
     return ret;
 }
@@ -63,13 +67,7 @@ UINT BaseEventFlags::get(ULONG requested_flags, UINT get_option, ULONG *actual_f
 
     if (ret != NX_SUCCESS && ret != TX_NO_EVENTS) {
         constexpr char fmt[] = "Stm32ThreadX::BaseEventFlags[%s]: tx_event_flags_get() = 0x%02x";
-        char buffer[snprintf(nullptr, 0, fmt, getName(), ret) + 1]{};
-        snprintf(buffer, sizeof(buffer), fmt, getName(), ret);
-        log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)->println(buffer);
-#if __EXCEPTIONS
-        throw std::runtime_error(buffer);
-#endif
-        return ret;
+        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
     return ret;
 }
@@ -85,13 +83,7 @@ UINT BaseEventFlags::info_get(CHAR **name, ULONG *current_flags, TX_THREAD **fir
 
     if (ret != NX_SUCCESS) {
         constexpr char fmt[] = "Stm32ThreadX::BaseEventFlags[%s]: tx_event_flags_info_get() = 0x%02x";
-        char buffer[snprintf(nullptr, 0, fmt, getName(), ret) + 1]{};
-        snprintf(buffer, sizeof(buffer), fmt, getName(), ret);
-        log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)->println(buffer);
-#if __EXCEPTIONS
-        throw std::runtime_error(buffer);
-#endif
-        return ret;
+        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
     return ret;
 }
@@ -105,13 +97,7 @@ UINT BaseEventFlags::set(ULONG flags_to_set, UINT set_option) {
 
     if (ret != NX_SUCCESS) {
         constexpr char fmt[] = "Stm32ThreadX::BaseEventFlags[%s]: tx_event_flags_set() = 0x%02x";
-        char buffer[snprintf(nullptr, 0, fmt, getName(), ret) + 1]{};
-        snprintf(buffer, sizeof(buffer), fmt, getName(), ret);
-        log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)->println(buffer);
-#if __EXCEPTIONS
-        throw std::runtime_error(buffer);
-#endif
-        return ret;
+        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
     return ret;
 }
@@ -125,13 +111,7 @@ UINT BaseEventFlags::set_notify(events_set_notify_cb events_set_notify) {
 
     if (ret != NX_SUCCESS) {
         constexpr char fmt[] = "Stm32ThreadX::BaseEventFlags[%s]: tx_event_flags_set_notify() = 0x%02x";
-        char buffer[snprintf(nullptr, 0, fmt, getName(), ret) + 1]{};
-        snprintf(buffer, sizeof(buffer), fmt, getName(), ret);
-        log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)->println(buffer);
-#if __EXCEPTIONS
-        throw std::runtime_error(buffer);
-#endif
-        return ret;
+        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
     return ret;
 }
@@ -147,13 +127,7 @@ UINT BaseEventFlags::performance_info_get(ULONG *sets, ULONG *gets, ULONG *suspe
 
     if (ret != NX_SUCCESS) {
         constexpr char fmt[] = "Stm32ThreadX::BaseEventFlags[%s]: tx_event_flags_performance_info_get() = 0x%02x";
-        char buffer[snprintf(nullptr, 0, fmt, getName(), ret) + 1]{};
-        snprintf(buffer, sizeof(buffer), fmt, getName(), ret);
-        log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)->println(buffer);
-#if __EXCEPTIONS
-        throw std::runtime_error(buffer);
-#endif
-        return ret;
+        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
     return ret;
 }
@@ -168,13 +142,7 @@ UINT BaseEventFlags::performance_system_info_get(ULONG *sets, ULONG *gets, ULONG
 
     if (ret != NX_SUCCESS) {
         constexpr char fmt[] = "Stm32ThreadX::BaseEventFlags[%s]: tx_event_flags_performance_system_info_get() = 0x%02x";
-        char buffer[snprintf(nullptr, 0, fmt, getName(), ret) + 1]{};
-        snprintf(buffer, sizeof(buffer), fmt, getName(), ret);
-        log(Stm32ItmLogger::LoggerInterface::Severity::ERROR)->println(buffer);
-#if __EXCEPTIONS
-        throw std::runtime_error(buffer);
-#endif
-        return ret;
+        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
     return ret;
 }
