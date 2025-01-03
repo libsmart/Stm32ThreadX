@@ -35,7 +35,7 @@ UINT BaseEventFlags::create(CHAR *name_ptr) {
     // @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_event_flags_create
     const auto ret = tx_event_flags_create(this, name_ptr);
 
-    if (ret != NX_SUCCESS) {
+    if (ret != TX_SUCCESS) {
         constexpr char fmt[] = "Stm32ThreadX::BaseEventFlags[%s]: tx_event_flags_create() = 0x%02x";
         LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
@@ -51,7 +51,7 @@ UINT BaseEventFlags::del() {
 
     std::memset(static_cast<TX_EVENT_FLAGS_GROUP *>(this), 0, sizeof(TX_EVENT_FLAGS_GROUP));
 
-    if (ret != NX_SUCCESS) {
+    if (ret != TX_SUCCESS) {
         constexpr char fmt[] = "Stm32ThreadX::BaseEventFlags[%s]: tx_event_flags_delete() = 0x%02x";
         LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
@@ -65,7 +65,7 @@ UINT BaseEventFlags::get(ULONG requested_flags, UINT get_option, ULONG *actual_f
     // @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_event_flags_get
     const auto ret = tx_event_flags_get(this, requested_flags, get_option, actual_flags_ptr, wait_option);
 
-    if (ret != NX_SUCCESS && ret != TX_NO_EVENTS) {
+    if (ret != TX_SUCCESS && ret != TX_NO_EVENTS) {
         constexpr char fmt[] = "Stm32ThreadX::BaseEventFlags[%s]: tx_event_flags_get() = 0x%02x";
         LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
@@ -81,7 +81,7 @@ UINT BaseEventFlags::info_get(CHAR **name, ULONG *current_flags, TX_THREAD **fir
     // @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_event_flags_info_get
     const auto ret = tx_event_flags_info_get(this, name, current_flags, first_suspended, suspended_count, next_group);
 
-    if (ret != NX_SUCCESS) {
+    if (ret != TX_SUCCESS) {
         constexpr char fmt[] = "Stm32ThreadX::BaseEventFlags[%s]: tx_event_flags_info_get() = 0x%02x";
         LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
@@ -95,7 +95,7 @@ UINT BaseEventFlags::set(ULONG flags_to_set, UINT set_option) {
     // @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_event_flags_set
     const auto ret = tx_event_flags_set(this, flags_to_set, set_option);
 
-    if (ret != NX_SUCCESS) {
+    if (ret != TX_SUCCESS) {
         constexpr char fmt[] = "Stm32ThreadX::BaseEventFlags[%s]: tx_event_flags_set() = 0x%02x";
         LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
@@ -109,7 +109,7 @@ UINT BaseEventFlags::set_notify(events_set_notify_cb events_set_notify) {
     // @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_event_flags_set_notify
     const auto ret = tx_event_flags_set_notify(this, events_set_notify);
 
-    if (ret != NX_SUCCESS) {
+    if (ret != TX_SUCCESS) {
         constexpr char fmt[] = "Stm32ThreadX::BaseEventFlags[%s]: tx_event_flags_set_notify() = 0x%02x";
         LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
@@ -125,7 +125,7 @@ UINT BaseEventFlags::performance_info_get(ULONG *sets, ULONG *gets, ULONG *suspe
     // @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_event_flags_performance_info_get
     const auto ret = tx_event_flags_performance_info_get(this, sets, gets, suspensions, timeouts);
 
-    if (ret != NX_SUCCESS) {
+    if (ret != TX_SUCCESS) {
         constexpr char fmt[] = "Stm32ThreadX::BaseEventFlags[%s]: tx_event_flags_performance_info_get() = 0x%02x";
         LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
@@ -140,7 +140,7 @@ UINT BaseEventFlags::performance_system_info_get(ULONG *sets, ULONG *gets, ULONG
     // @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_event_flags_performance_system_info_get
     const auto ret = tx_event_flags_performance_system_info_get(sets, gets, suspensions, timeouts);
 
-    if (ret != NX_SUCCESS) {
+    if (ret != TX_SUCCESS) {
         constexpr char fmt[] = "Stm32ThreadX::BaseEventFlags[%s]: tx_event_flags_performance_system_info_get() = 0x%02x";
         LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }

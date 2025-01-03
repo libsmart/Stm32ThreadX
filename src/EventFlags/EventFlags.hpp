@@ -6,10 +6,10 @@
 #ifndef LIBSMART_STM32THREADX_EVENTFLAGS_HPP
 #define LIBSMART_STM32THREADX_EVENTFLAGS_HPP
 
-#include <../../../../Application/libsmart_config.hpp>
-#include "../../../Stm32ItmLogger/src/Loggable.hpp"
-#include "../../../Stm32Common/src/Nameable.hpp"
-#include "../../../../Middlewares/ST/threadx/common/inc/tx_api.h"
+#include <libsmart_config.hpp>
+#include "Loggable.hpp"
+#include "Nameable.hpp"
+#include "tx_api.h"
 #include "BaseEventFlags.hpp"
 
 namespace Stm32ThreadX {
