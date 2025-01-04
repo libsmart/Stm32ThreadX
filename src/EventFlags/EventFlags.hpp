@@ -63,7 +63,7 @@ namespace Stm32ThreadX {
                 NO_WAIT = 0,
                 /** Suspend indefinitely until the event flags are available */
                 WAIT_FOREVER = 0xFFFFFFFF
-            };
+            } waitOption;
         };
 
 
@@ -123,6 +123,23 @@ namespace Stm32ThreadX {
          * @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_event_flags_get
          */
         UINT get(ULONG requestedFlags, getOption_t getOption, waitOption_t waitOption);
+
+
+        /**
+         * @brief Retrieves event flags in the group based on the specified parameters.
+         *
+         * This method receives the requested event flags in accordance with the specified
+         * options and manages synchronization using the provided waiting option.
+         *
+         * @param requestedFlags Specifies the event flags to retrieve.
+         * @param getOption Specifies the retrieval option (e.g., and/or wait conditions).
+         * @param actualFlagsRef Reference to store the actual retrieved event flags.
+         * @param waitOption Specifies the wait option for event flag retrieval
+         *        (e.g., timeout settings).
+         *
+         * @return A status code indicating the execution result.
+         */
+        UINT get(ULONG requestedFlags, getOption_t getOption, ULONG &actualFlagsRef, waitOption_t waitOption);
 
 
         /**
@@ -199,10 +216,22 @@ namespace Stm32ThreadX {
 
 
         /**
+         * @brief Waits for specified event flags to be set and then clears them.
+         *
+         * This method waits until the requested event flags are all set within the
+         * event flags group. Once the flags are set, they are cleared automatically.
+         *
+         * @param requestedFlags A bitmask representing the event flags to wait for.
+         * @return A status code indicating the outcome of the wait operation.
+         */
+        UINT awaitClear(ULONG requestedFlags);
+
+
+        /**
          * @brief Awaits the specified event flags to be set.
          *
          * This method waits for the specified event flags to be set in the event flags group. The method will block until the
-         * requested flags are set or the specified wait option is satisfied.
+         * requested flags are all set or the specified wait option is satisfied.
          *
          * @param requestedFlags The event flags to wait for.
          * @param waitOption The wait option to specify the maximum number of timer-ticks to stay suspended while
@@ -218,6 +247,20 @@ namespace Stm32ThreadX {
          * @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter3.md#event-flags
          */
         UINT await(ULONG requestedFlags, waitOption_t waitOption);
+
+
+        /**
+         * @brief Awaits the specified event flags in the event flags group.
+         *
+         * This method waits for the designated event flags to become set in the event flags group,
+         * based on the provided options. By default, this call blocks indefinitely until the requested
+         * flags are set, unless otherwise specified via internal configurations.
+         *
+         * @param requestedFlags The bitmask representing the flags to wait for.
+         * @param getOption The option defining the condition under which the event flags should be retrieved (e.g., AND/OR logic).
+         * @return A status code indicating the success or error of the operation.
+         */
+        UINT await(ULONG requestedFlags, getOption_t getOption);
 
 
         /**
@@ -300,6 +343,7 @@ namespace Stm32ThreadX {
          */
         UINT set(const ULONG flagsToSet) { return set(flagsToSet, setOption_t::OR); };
 
+        using BaseEventFlags::set;
 
         /**
          * @brief Clear specified event flags.

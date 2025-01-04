@@ -19,8 +19,15 @@ UINT EventFlags::deleteFlags() {
 }
 
 UINT EventFlags::get(const ULONG requestedFlags, getOption_t getOption, waitOption_t waitOption) {
+    ULONG actualFlagsRef{};
+    return get(requestedFlags, getOption, actualFlagsRef, waitOption);
+}
+
+UINT EventFlags::get(ULONG requestedFlags, getOption_t getOption, ULONG &actualFlagsRef, waitOption_t waitOption) {
     actualFlags = 0;
-    return BaseEventFlags::get(requestedFlags, static_cast<UINT>(getOption), &actualFlags, waitOption.timeout);
+    const auto ret = BaseEventFlags::get(requestedFlags, static_cast<UINT>(getOption), &actualFlags, waitOption.timeout);
+    actualFlagsRef = actualFlags;
+    return ret;
 }
 
 UINT EventFlags::get(const ULONG requestedFlags) {
@@ -44,8 +51,16 @@ UINT EventFlags::await(const ULONG requestedFlags) {
     return await(requestedFlags, getOption_t::AND, waitOption_t{waitOption_t::WAIT_FOREVER});
 }
 
+UINT EventFlags::awaitClear(ULONG requestedFlags) {
+    return await(requestedFlags, getOption_t::AND_CLEAR, waitOption_t{waitOption_t::WAIT_FOREVER});
+}
+
 UINT EventFlags::await(const ULONG requestedFlags, const waitOption_t waitOption) {
     return await(requestedFlags, getOption_t::AND, waitOption);
+}
+
+UINT EventFlags::await(const ULONG requestedFlags, const getOption_t getOption) {
+    return await(requestedFlags, getOption, waitOption_t{waitOption_t::WAIT_FOREVER});
 }
 
 UINT EventFlags::await(const ULONG requestedFlags, const getOption_t getOption, const waitOption_t waitOption) {
