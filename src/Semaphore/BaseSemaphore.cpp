@@ -38,7 +38,7 @@ UINT BaseSemaphore::create(CHAR *name_ptr, ULONG initial_count) {
         initial_count
     );
 
-    if (ret != NX_SUCCESS) {
+    if (ret != TX_SUCCESS) {
         constexpr char fmt[] = "Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_create() = 0x%02x";
         LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
@@ -54,7 +54,7 @@ UINT BaseSemaphore::del() {
 
     std::memset(static_cast<TX_SEMAPHORE *>(this), 0, sizeof(TX_SEMAPHORE));
 
-    if (ret != NX_SUCCESS) {
+    if (ret != TX_SUCCESS) {
         constexpr char fmt[] = "Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_delete() = 0x%02x";
         LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
@@ -68,7 +68,7 @@ UINT BaseSemaphore::ceiling_put(ULONG ceiling) {
     // @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_semaphore_ceiling_put
     const auto ret = tx_semaphore_ceiling_put(this, ceiling);
 
-    if (ret != NX_SUCCESS) {
+    if (ret != TX_SUCCESS) {
         constexpr char fmt[] = "Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_ceiling_put() = 0x%02x";
         LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
@@ -82,7 +82,7 @@ UINT BaseSemaphore::get(ULONG wait_option) {
     // @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_semaphore_get
     const auto ret = tx_semaphore_get(this, wait_option);
 
-    if (ret != NX_SUCCESS) {
+    if (ret != TX_SUCCESS) {
         constexpr char fmt[] = "Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_get() = 0x%02x";
         LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
@@ -98,7 +98,7 @@ UINT BaseSemaphore::info_get(CHAR **name, ULONG *current_value, TX_THREAD **firs
     const auto ret = tx_semaphore_info_get(this, name, current_value,
                                            first_suspended, suspended_count, next_semaphore);
 
-    if (ret != NX_SUCCESS) {
+    if (ret != TX_SUCCESS) {
         constexpr char fmt[] = "Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_info_get() = 0x%02x";
         LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
@@ -113,7 +113,7 @@ UINT BaseSemaphore::performance_info_get(ULONG *puts, ULONG *gets, ULONG *suspen
     // @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_semaphore_performance_info_get
     const auto ret = tx_semaphore_performance_info_get(this, puts, gets, suspensions, timeouts);
 
-    if (ret != NX_SUCCESS) {
+    if (ret != TX_SUCCESS) {
         constexpr char fmt[] = "Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_performance_info_get() = 0x%02x";
         LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
@@ -128,7 +128,7 @@ UINT BaseSemaphore::performance_system_info_get(ULONG *puts, ULONG *gets, ULONG 
     // @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_semaphore_performance_system_info_get
     const auto ret = tx_semaphore_performance_system_info_get(puts, gets, suspensions, timeouts);
 
-    if (ret != NX_SUCCESS) {
+    if (ret != TX_SUCCESS) {
         constexpr char fmt[] = "Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_performance_system_info_get() = 0x%02x";
         LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
@@ -143,7 +143,7 @@ UINT BaseSemaphore::prioritize() {
     // @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_semaphore_prioritize
     const auto ret = tx_semaphore_prioritize(this);
 
-    if (ret != NX_SUCCESS) {
+    if (ret != TX_SUCCESS) {
         constexpr char fmt[] = "Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_prioritize() = 0x%02x";
         LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
@@ -157,7 +157,7 @@ UINT BaseSemaphore::put() {
     // @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_semaphore_put
     const auto ret = tx_semaphore_put(this);
 
-    if (ret != NX_SUCCESS) {
+    if (ret != TX_SUCCESS) {
         constexpr char fmt[] = "Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_put() = 0x%02x";
         LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
@@ -171,7 +171,7 @@ UINT BaseSemaphore::put_notify(semaphore_put_notify_callback semaphore_put_notif
     // @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_semaphore_put_notify
     const auto ret = tx_semaphore_put_notify(this, semaphore_put_notify);
 
-    if (ret != NX_SUCCESS) {
+    if (ret != TX_SUCCESS) {
         constexpr char fmt[] = "Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_put_notify() = 0x%02x";
         LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }

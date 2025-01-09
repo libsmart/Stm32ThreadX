@@ -41,7 +41,7 @@ UINT BaseQueue::create(CHAR *name_ptr, UINT message_size, void *queue_start, ULO
         queue_size
     );
 
-    if (ret != NX_SUCCESS) {
+    if (ret != TX_SUCCESS) {
         constexpr char fmt[] = "Stm32ThreadX::BaseQueue[%s]: tx_queue_create() = 0x%02x";
         LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
@@ -57,7 +57,7 @@ UINT BaseQueue::del() {
 
     std::memset(static_cast<TX_QUEUE *>(this), 0, sizeof(TX_QUEUE));
 
-    if (ret != NX_SUCCESS) {
+    if (ret != TX_SUCCESS) {
         constexpr char fmt[] = "Stm32ThreadX::BaseQueue[%s]: tx_queue_delete() = 0x%02x";
         LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
@@ -71,7 +71,7 @@ UINT BaseQueue::flush() {
     // @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_queue_flush
     const auto ret = tx_queue_flush(this);
 
-    if (ret != NX_SUCCESS) {
+    if (ret != TX_SUCCESS) {
         constexpr char fmt[] = "Stm32ThreadX::BaseQueue[%s]: tx_queue_flush() = 0x%02x";
         LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
@@ -90,7 +90,7 @@ UINT BaseQueue::front_send(void *source_ptr, ULONG wait_option) {
         wait_option
     );
 
-    if (ret != NX_SUCCESS) {
+    if (ret != TX_SUCCESS) {
         constexpr char fmt[] = "Stm32ThreadX::BaseQueue[%s]: tx_queue_front_send() = 0x%02x";
         LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
@@ -114,7 +114,7 @@ UINT BaseQueue::info_get(CHAR **name, ULONG *enqueued, ULONG *available_storage,
         next_queue
     );
 
-    if (ret != NX_SUCCESS) {
+    if (ret != TX_SUCCESS) {
         constexpr char fmt[] = "Stm32ThreadX::BaseQueue[%s]: tx_queue_info_get() = 0x%02x";
         LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
@@ -140,7 +140,7 @@ UINT BaseQueue::performance_info_get(ULONG *messages_sent, ULONG *messages_recei
         timeouts
     );
 
-    if (ret != NX_SUCCESS) {
+    if (ret != TX_SUCCESS) {
         constexpr char fmt[] = "Stm32ThreadX::BaseQueue[%s]: tx_queue_performance_info_get() = 0x%02x";
         LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
@@ -164,7 +164,7 @@ UINT BaseQueue::performance_system_info_get(ULONG *messages_sent, ULONG *message
         timeouts
     );
 
-    if (ret != NX_SUCCESS) {
+    if (ret != TX_SUCCESS) {
         constexpr char fmt[] = "Stm32ThreadX::BaseQueue[%s]: tx_queue_performance_system_info_get() = 0x%02x";
         LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
@@ -183,7 +183,7 @@ UINT BaseQueue::prioritize() {
         this
     );
 
-    if (ret != NX_SUCCESS) {
+    if (ret != TX_SUCCESS) {
         constexpr char fmt[] = "Stm32ThreadX::BaseQueue[%s]: tx_queue_prioritize() = 0x%02x";
         LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
@@ -202,7 +202,7 @@ UINT BaseQueue::receive(void *destination_ptr, ULONG wait_option) {
         wait_option
     );
 
-    if (ret != NX_SUCCESS && ret != TX_DELETED && ret != TX_QUEUE_EMPTY && ret != TX_WAIT_ABORTED) {
+    if (ret != TX_SUCCESS && ret != TX_DELETED && ret != TX_QUEUE_EMPTY && ret != TX_WAIT_ABORTED) {
         constexpr char fmt[] = "Stm32ThreadX::BaseQueue[%s]: tx_queue_receive() = 0x%02x";
         LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
@@ -221,7 +221,7 @@ UINT BaseQueue::send(void *source_ptr, ULONG wait_option) {
         wait_option
     );
 
-    if (ret != NX_SUCCESS) {
+    if (ret != TX_SUCCESS) {
         constexpr char fmt[] = "Stm32ThreadX::BaseQueue[%s]: tx_queue_send() = 0x%02x";
         LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
@@ -239,7 +239,7 @@ UINT BaseQueue::send_notify(send_notify_callback queue_send_notify) {
         queue_send_notify
     );
 
-    if (ret != NX_SUCCESS) {
+    if (ret != TX_SUCCESS) {
         constexpr char fmt[] = "Stm32ThreadX::BaseQueue[%s]: tx_queue_send_notify() = 0x%02x";
         LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
