@@ -125,6 +125,7 @@ namespace Stm32ThreadX {
          */
         UINT get(ULONG requestedFlags, getOption_t getOption, waitOption_t waitOption);
 
+        UINT get(ULONG requestedFlags, getOption_t getOption, ULONG &actualFlagsRef, waitOption_t waitOption);
 
         /**
          * @brief Retrieves the current value of the event flag group.
@@ -198,6 +199,8 @@ namespace Stm32ThreadX {
          */
         UINT await(ULONG requestedFlags);
 
+        UINT awaitClear(ULONG requestedFlags);
+
 
         /**
          * @brief Awaits the specified event flags to be set.
@@ -220,6 +223,7 @@ namespace Stm32ThreadX {
          */
         UINT await(ULONG requestedFlags, waitOption_t waitOption);
 
+        UINT await(const ULONG requestedFlags, const getOption_t getOption);
 
         /**
          * @brief Await the specified event flags.
