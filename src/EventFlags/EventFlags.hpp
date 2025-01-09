@@ -6,10 +6,11 @@
 #ifndef LIBSMART_STM32THREADX_EVENTFLAGS_HPP
 #define LIBSMART_STM32THREADX_EVENTFLAGS_HPP
 
-#include <../../../../Application/libsmart_config.hpp>
-#include "../../../Stm32ItmLogger/src/Loggable.hpp"
-#include "../../../Stm32Common/src/Nameable.hpp"
-#include "../../../../Middlewares/ST/threadx/common/inc/tx_api.h"
+#include <limits.h>
+#include <libsmart_config.hpp>
+#include "Loggable.hpp"
+#include "Nameable.hpp"
+#include "tx_api.h"
 #include "BaseEventFlags.hpp"
 
 namespace Stm32ThreadX {
@@ -298,7 +299,7 @@ namespace Stm32ThreadX {
          *         - Other error codes: If an error occurred while setting the event flags.
          * @see Stm32ThreadX::EventFlags::set()
          */
-        UINT set(const ULONG flagsToSet) { return set(flagsToSet, setOption_t::OR); };
+        UINT set(const ULONG flagsToSet) { return set(flagsToSet, setOption_t::OR); }
 
 
         /**
@@ -313,7 +314,18 @@ namespace Stm32ThreadX {
          * @return The return value of the method.
          * @see Stm32ThreadX::EventFlags::set()
          */
-        UINT clear(const ULONG flagsToClear) { return set(~flagsToClear, setOption_t::AND); };
+        UINT clear(const ULONG flagsToClear) { return set(~flagsToClear, setOption_t::AND); }
+
+
+        /**
+         * @brief Clears all event flags in the event flags group.
+         *
+         * This method clears event flags in the group by calling the clear method with a default mask
+         * that clears all flags.
+         *
+         * @return Completion status of the operation as a UINT. Returns TX_SUCCESS on success or an error code otherwise.
+         */
+        UINT clear() { return clear(ULONG_MAX); }
 
     private:
         /** Stores the last value of the actual flags returned by get() functions. */
