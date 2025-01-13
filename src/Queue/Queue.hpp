@@ -27,6 +27,19 @@ namespace Stm32ThreadX {
 
         virtual UINT create(UINT message_size);
 
+        /**
+         * @brief Checks if the queue is empty.
+         *
+         * This function retrieves the current state of the queue and determines
+         * whether there are any enqueued elements. It accomplishes this by calling
+         * the `info_get` function to query the queue's attributes, particularly
+         * the number of enqueued elements. If the number of enqueued elements is
+         * zero, the queue is considered empty.
+         *
+         * @return True if the queue is empty, false otherwise.
+         */
+        virtual bool isEmpty();
+
         using BaseQueue::create;
 
     private:

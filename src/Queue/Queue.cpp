@@ -10,3 +10,9 @@ using namespace Stm32ThreadX;
 UINT Queue::create(UINT message_size) {
     return create(getNameNonConst(), message_size, queueMem, queueMemSize);
 }
+
+bool Queue::isEmpty() {
+    ULONG enqueued{};
+    info_get(nullptr, &enqueued, nullptr, nullptr, nullptr, nullptr);
+    return enqueued == 0;
+}

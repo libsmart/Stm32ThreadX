@@ -99,9 +99,9 @@ UINT BaseQueue::front_send(void *source_ptr, ULONG wait_option) {
 
 UINT BaseQueue::info_get(CHAR **name, ULONG *enqueued, ULONG *available_storage, TX_THREAD **first_suspended,
                          ULONG *suspended_count, TX_QUEUE **next_queue) {
-    log(Stm32ItmLogger::LoggerInterface::Severity::DEBUGGING)
-            ->printf("Stm32ThreadX::BaseQueue[%s]::info_get()\r\n",
-                     getName());
+    // log(Stm32ItmLogger::LoggerInterface::Severity::DEBUGGING)
+    //         ->printf("Stm32ThreadX::BaseQueue[%s]::info_get()\r\n",
+    //                  getName());
 
     // @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_queue_info_get
     const auto ret = tx_queue_info_get(
