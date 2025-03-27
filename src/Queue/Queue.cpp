@@ -12,7 +12,11 @@ UINT Queue::create(UINT message_size) {
 }
 
 bool Queue::isEmpty() {
+    return getEnqueuedCount() == 0;
+}
+
+ULONG Queue::getEnqueuedCount() {
     ULONG enqueued{};
     info_get(nullptr, &enqueued, nullptr, nullptr, nullptr, nullptr);
-    return enqueued == 0;
+    return enqueued;
 }

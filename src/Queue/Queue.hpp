@@ -27,6 +27,9 @@ namespace Stm32ThreadX {
 
         virtual UINT create(UINT message_size);
 
+        using BaseQueue::create;
+
+
         /**
          * @brief Checks if the queue is empty.
          *
@@ -40,7 +43,18 @@ namespace Stm32ThreadX {
          */
         virtual bool isEmpty();
 
-        using BaseQueue::create;
+
+        /**
+         * @brief Retrieves the number of enqueued elements in the queue.
+         *
+         * This function queries the current state of the queue to determine
+         * the exact number of messages currently enqueued. It uses the `info_get`
+         * function to fetch queue-specific attributes, including the count of
+         * enqueued items. This value is then returned to the caller.
+         *
+         * @return The number of enqueued elements in the queue.
+         */
+        virtual ULONG getEnqueuedCount();
 
     private:
         uint8_t *queueMem{};
