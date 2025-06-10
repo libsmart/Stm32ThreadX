@@ -22,6 +22,7 @@
 #ifndef LIBSMART_STM32THREADX_STM32THREADXTHREAD_HPP
 #define LIBSMART_STM32THREADX_STM32THREADXTHREAD_HPP
 
+#include <libsmart_config.hpp>
 #include <cstdint>
 #include <type_traits>
 #include "tx_api.h"
@@ -185,7 +186,7 @@ namespace Stm32ThreadX {
             using value_type = UINT;
 
             constexpr priority()
-                : value_(1) {
+                : value_(LIBSMART_STM32THREADX_DEFAULT_PRIO) {
             }
 
             constexpr priority(value_type value)
@@ -301,7 +302,8 @@ namespace Stm32ThreadX {
         std::uint32_t stack_size{};
         threadEntry func{};
         ULONG param{};
-        priority prio{};
+        priority prio{LIBSMART_STM32THREADX_DEFAULT_PRIO};
+        priority prio_preempt{LIBSMART_STM32THREADX_DEFAULT_PRIO_PREEMPT};
         const char *threadName{};
     };
 

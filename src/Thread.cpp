@@ -40,7 +40,7 @@ void Thread::createThread() {
         pstack, // VOID *stack_start
         stack_size, // ULONG stack_size
         prio, // UINT priority
-        prio, // UINT preempt_threshold
+        prio_preempt, // UINT preempt_threshold
         TX_NO_TIME_SLICE, // ULONG time_slice
         TX_DONT_START); // UINT auto_start
     assert_param(result == TX_SUCCESS);
