@@ -31,12 +31,23 @@ namespace Stm32ThreadX {
          * leveraging the ThreadX semaphore creation API. It logs the creation event
          * and error messages if the creation fails.
          *
-         * @param name_ptr A pointer to a character string that represents the name of the semaphore.
+         * @param name A character string that represents the name of the semaphore.
          * @param initial_count The initial count of the semaphore, representing the number of resources available.
          * @return A UINT value that indicates the success or error code of the operation.
          *         Returns NX_SUCCESS if the semaphore is successfully created, otherwise an error code.
          */
-        virtual UINT create(CHAR *name_ptr, ULONG initial_count);
+        virtual UINT create(std::string_view name, ULONG initial_count);
+
+        /**
+         * @brief Creates a semaphore with the specified name.
+         *
+         * This method initializes a semaphore using the provided name. It is a wrapper
+         * that internally invokes the semaphore creation process with a default initial count of zero.
+         *
+         * @param name A string view representing the name of the semaphore.
+         * @return A UINT value representing the success or error code of the operation.
+         */
+        virtual UINT create(std::string_view name);
 
         /**
          * @brief Deletes the semaphore and clears its associated memory.

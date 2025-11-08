@@ -7,15 +7,15 @@
 
 using namespace Stm32ThreadX;
 
-UINT BaseSemaphore::create(CHAR *name_ptr, ULONG initial_count) {
+UINT BaseSemaphore::create(const std::string_view name, ULONG initial_count) {
     log(Stm32ItmLogger::LoggerInterface::Severity::DEBUGGING)
             ->printf("Stm32ThreadX::BaseSemaphore[%s]::create(\"%s\", %d)\r\n",
-                     getName(), name_ptr, initial_count);
+                     getName(), name.data(), initial_count);
 
     // @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_semaphore_create
     const auto ret = tx_semaphore_create(
         this,
-        name_ptr,
+        const_cast<CHAR *>(name.data()),
         initial_count
     );
 
@@ -24,6 +24,10 @@ UINT BaseSemaphore::create(CHAR *name_ptr, ULONG initial_count) {
         LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
     }
     return ret;
+}
+
+UINT BaseSemaphore::create(const std::string_view name) {
+    return create(name, 0);
 }
 
 UINT BaseSemaphore::del() {
