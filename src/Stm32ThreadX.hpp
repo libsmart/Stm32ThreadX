@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
+ * SPDX-FileCopyrightText: 2025 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
  * SPDX-License-Identifier: BSD-3-Clause
  *
  * Copyright (c) 2024 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
@@ -19,12 +19,80 @@
  * ----------------------------------------------------------------------------
  */
 
-#ifndef LIBSMART_STM32THREADX_STM32THREADX_HPP
-#define LIBSMART_STM32THREADX_STM32THREADX_HPP
+#pragma once
 
+#include <type_traits>
+#include <utility>
+
+extern "C" {
 #include "tx_api.h"
+}
 
 namespace Stm32ThreadX {
+    /**
+     * @brief Executes the provided callable object within a critical section.
+     *
+     * This function ensures that the execution of the provided callable object is atomic by temporarily
+     * disabling interrupts. The interrupt state is restored to its original value after execution, even
+     * in the event an exception is thrown.
+     *
+     * @tparam Fn The type of the callable object to be executed.
+     *
+     * @param fn A callable object to be executed in a critical section. The callable must have a `void` return type.
+     *
+     * @return void
+     *
+     * @throw Any exception that occurs during the execution of the callable object will be propagated
+     *        after restoring the interrupt state.
+     *
+     * @note Uses `tx_interrupt_control` to manage the interrupt state.
+     */
+    template<class Fn>
+    static std::enable_if_t<std::is_void_v<std::invoke_result_t<Fn> >, void>
+    atomic(Fn &&fn) {
+        const auto old_posture = tx_interrupt_control(TX_INT_DISABLE);
+        try {
+            std::forward<Fn>(fn)();
+        } catch (...) {
+            tx_interrupt_control(old_posture);
+            throw;
+        }
+        tx_interrupt_control(old_posture);
+    }
+
+
+    /**
+     * @brief Executes the provided function within a critical section and returns its result.
+     *
+     * This function temporarily disables interrupts to ensure atomicity while executing the provided
+     * callable object. The interrupt state is restored to its original value after the function execution,
+     * even in the case of an exception. If the function returns a value, it is returned to the caller.
+     *
+     * @param fn A callable object (function) representing the code to be executed in a critical section.
+     *           The callable must return a non-void result.
+     *
+     * @return The result of the provided callable object.
+     *
+     * @throw Any exception thrown by the provided callable object will be propagated.
+     *        The interrupt state will still be restored before the exception is re-thrown.
+     *
+     * @note The function uses `tx_interrupt_control` to disable and restore the interrupt state.
+     */
+    template<class Fn>
+    static std::enable_if_t<!std::is_void_v<std::invoke_result_t<Fn> >, std::invoke_result_t<Fn> >
+    atomic(Fn &&fn) {
+        const auto old_posture = tx_interrupt_control(TX_INT_DISABLE);
+        try {
+            auto ret = std::forward<Fn>(fn)();
+            tx_interrupt_control(old_posture);
+            return ret;
+        } catch (...) {
+            tx_interrupt_control(old_posture);
+            throw;
+        }
+    }
+
+
     /**
      * @brief Bounce Function
      *
@@ -52,4 +120,3 @@ namespace Stm32ThreadX {
 
 #define BOUNCE(c, m) bounce<c, decltype(&c::m), &c::m>
 }
-#endif //LIBSMART_STM32THREADX_STM32THREADX_HPP
