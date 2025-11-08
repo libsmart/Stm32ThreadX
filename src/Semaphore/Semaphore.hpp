@@ -21,7 +21,21 @@ namespace Stm32ThreadX {
         Semaphore(const char *name, Stm32ItmLogger::LoggerInterface *logger)
             : BaseSemaphore(name, logger) { ; }
 
-        Semaphore(ULONG initial_count, const char *name, Stm32ItmLogger::LoggerInterface *logger)
+        /**
+         * @brief Constructs a Semaphore object with a specified initial count and name.
+         *
+         * This constructor initializes the Semaphore with the given initial count and name.
+         * It also uses the provided logger for logging purposes. A semaphore object is created
+         * with the specified name and initial count value.
+         *
+         * @warning Only use this in ThreadX context.
+         *
+         * @param initial_count The initial count value for the semaphore.
+         * @param name The name assigned to the semaphore.
+         * @param logger A pointer to a LoggerInterface instance used for logging.
+         * @return None.
+         */
+        Semaphore(const ULONG initial_count, const char *name, Stm32ItmLogger::LoggerInterface *logger)
             : BaseSemaphore(name, logger) {
             BaseSemaphore::create(Nameable::getNameNonConst(), initial_count);
         }
