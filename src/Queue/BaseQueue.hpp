@@ -31,7 +31,7 @@ namespace Stm32ThreadX {
          * an exception is thrown, provided exceptions are enabled.
          *
          * @param name_ptr A pointer to a CHAR array representing the name of the queue.
-         * @param message_size The size of each message that the queue will hold, specified as a UINT.
+         * @param message_size The size (in ULONGs) of each message that the queue will hold, specified as a UINT.
          * @param queue_start A pointer to the starting address of the memory the queue will occupy.
          * @param queue_size The total size of the queue memory in ULONG units.
          *
