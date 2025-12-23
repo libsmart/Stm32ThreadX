@@ -56,6 +56,19 @@ namespace Stm32ThreadX {
          */
         virtual ULONG getEnqueuedCount();
 
+        /**
+         * @brief Retrieves the available storage capacity in the queue.
+         *
+         * This function queries the current state of the queue to determine how much storage
+         * space remains for enqueuing additional messages. It leverages the `info_get`
+         * function to access queue-specific attributes, specifically the available storage
+         * value. The returned value indicates how many more messages can be placed into the
+         * queue before it becomes full.
+         *
+         * @return The available storage capacity in the queue.
+         */
+        virtual ULONG getAvailableStorage();
+
     private:
         uint8_t *queueMem{};
         size_t queueMemSize{};

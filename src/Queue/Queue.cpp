@@ -20,3 +20,9 @@ ULONG Queue::getEnqueuedCount() {
     info_get(nullptr, &enqueued, nullptr, nullptr, nullptr, nullptr);
     return enqueued;
 }
+
+ULONG Queue::getAvailableStorage() {
+    ULONG available_storage{};
+    info_get(nullptr, nullptr, &available_storage, nullptr, nullptr, nullptr);
+    return available_storage;
+}
