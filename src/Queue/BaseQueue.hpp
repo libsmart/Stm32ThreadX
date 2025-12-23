@@ -24,6 +24,30 @@ namespace Stm32ThreadX {
             : TX_QUEUE(), Loggable(logger), Nameable(name) { ; }
 
         /**
+         * @brief Deleted copy constructor to prevent copying of a BaseQueue instance.
+         *
+         * This method is explicitly deleted to disallow copying of BaseQueue objects,
+         * ensuring that each instance maintains unique ownership semantics.
+         *
+         * @param other A constant reference to the BaseQueue object to be copied. This operation is disallowed.
+         *
+         * @return No return value, as the copy constructor is deleted.
+         */
+        BaseQueue(const BaseQueue&) = delete;
+
+        /**
+         * @brief Deleted copy assignment operator to prevent assigning a BaseQueue instance.
+         *
+         * This operator is explicitly deleted to disallow assignment between BaseQueue objects,
+         * ensuring that each instance maintains unique ownership semantics.
+         *
+         * @param other A constant reference to the BaseQueue object to be assigned. This operation is disallowed.
+         *
+         * @return No return value, as the assignment operator is deleted.
+         */
+        BaseQueue& operator=(const BaseQueue&) = delete;
+
+        /**
          * @brief Creates a new queue with the specified parameters.
          *
          * This method initializes a queue with a given name, message size, starting address, and total size.
