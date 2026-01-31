@@ -1,16 +1,16 @@
 /*
- * SPDX-FileCopyrightText: 2024 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
+ * SPDX-FileCopyrightText: 2026 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
 #include "BaseSemaphore.hpp"
 
 using namespace Stm32ThreadX;
+using Severity = Stm32ItmLogger::LoggerInterface::Severity;
 
 UINT BaseSemaphore::create(const std::string_view name, ULONG initial_count) {
-    log(Stm32ItmLogger::LoggerInterface::Severity::DEBUGGING)
-            ->printf("Stm32ThreadX::BaseSemaphore[%s]::create(\"%s\", %d)\r\n",
-                     getName(), name.data(), initial_count);
+    log(Severity::DEBUGGING)->printf("%s::%s[%s]::create(\"%s\", %d)\r\n", COMPONENT_NAME, CLASS_NAME, getName(),
+                                     name.data(), initial_count);
 
     // @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_semaphore_create
     const auto ret = tx_semaphore_create(
@@ -20,8 +20,8 @@ UINT BaseSemaphore::create(const std::string_view name, ULONG initial_count) {
     );
 
     if (ret != TX_SUCCESS) {
-        constexpr char fmt[] = "Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_create() = 0x%02x";
-        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
+        constexpr char fmt[] = "%s::%s[%s]: tx_semaphore_create() = 0x%02x";
+        LIBSMART_HANDLE_ERROR(fmt, COMPONENT_NAME, CLASS_NAME, getName(), ret);
     }
     return ret;
 }
@@ -31,8 +31,7 @@ UINT BaseSemaphore::create(const std::string_view name) {
 }
 
 UINT BaseSemaphore::del() {
-    log(Stm32ItmLogger::LoggerInterface::Severity::DEBUGGING)
-            ->printf("Stm32ThreadX::BaseSemaphore[%s]::del()\r\n", getName());
+    log(Severity::DEBUGGING)->printf("%s::%s[%s]::del()\r\n", COMPONENT_NAME, CLASS_NAME, getName());
 
     // @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_semaphore_delete
     const auto ret = tx_semaphore_delete(this);
@@ -40,52 +39,49 @@ UINT BaseSemaphore::del() {
     std::memset(static_cast<TX_SEMAPHORE *>(this), 0, sizeof(TX_SEMAPHORE));
 
     if (ret != TX_SUCCESS) {
-        constexpr char fmt[] = "Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_delete() = 0x%02x";
-        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
+        constexpr char fmt[] = "%s::%s[%s]: tx_semaphore_delete() = 0x%02x";
+        LIBSMART_HANDLE_ERROR(fmt, COMPONENT_NAME, CLASS_NAME, getName(), ret);
     }
     return ret;
 }
 
 UINT BaseSemaphore::ceiling_put(ULONG ceiling) {
-    log(Stm32ItmLogger::LoggerInterface::Severity::DEBUGGING)
-            ->printf("Stm32ThreadX::BaseSemaphore[%s]::ceiling_put(%d)\r\n", getName(), ceiling);
+    log(Severity::DEBUGGING)->printf("%s::%s[%s]::ceiling_put(%d)\r\n", COMPONENT_NAME, CLASS_NAME, getName(), ceiling);
 
     // @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_semaphore_ceiling_put
     const auto ret = tx_semaphore_ceiling_put(this, ceiling);
 
     if (ret != TX_SUCCESS) {
-        constexpr char fmt[] = "Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_ceiling_put() = 0x%02x";
-        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
+        constexpr char fmt[] = "%s::%s[%s]: tx_semaphore_ceiling_put() = 0x%02x";
+        LIBSMART_HANDLE_ERROR(fmt, COMPONENT_NAME, CLASS_NAME, getName(), ret);
     }
     return ret;
 }
 
 UINT BaseSemaphore::get(ULONG wait_option) {
-    log(Stm32ItmLogger::LoggerInterface::Severity::DEBUGGING)
-            ->printf("Stm32ThreadX::BaseSemaphore[%s]::get()\r\n", getName());
+    log(Severity::DEBUGGING)->printf("%s::%s[%s]::get()\r\n", COMPONENT_NAME, CLASS_NAME, getName());
 
     // @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_semaphore_get
     const auto ret = tx_semaphore_get(this, wait_option);
 
     if (ret != TX_SUCCESS) {
-        constexpr char fmt[] = "Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_get() = 0x%02x";
-        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
+        constexpr char fmt[] = "%s::%s[%s]: tx_semaphore_get() = 0x%02x";
+        LIBSMART_HANDLE_ERROR(fmt, COMPONENT_NAME, CLASS_NAME, getName(), ret);
     }
     return ret;
 }
 
 UINT BaseSemaphore::info_get(CHAR **name, ULONG *current_value, TX_THREAD **first_suspended, ULONG *suspended_count,
                              TX_SEMAPHORE **next_semaphore) {
-    log(Stm32ItmLogger::LoggerInterface::Severity::DEBUGGING)
-            ->printf("Stm32ThreadX::BaseSemaphore[%s]::info_get()\r\n", getName());
+    log(Severity::DEBUGGING)->printf("%s::%s[%s]::info_get()\r\n", COMPONENT_NAME, CLASS_NAME, getName());
 
     // @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_semaphore_info_get
     const auto ret = tx_semaphore_info_get(this, name, current_value,
                                            first_suspended, suspended_count, next_semaphore);
 
     if (ret != TX_SUCCESS) {
-        constexpr char fmt[] = "Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_info_get() = 0x%02x";
-        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
+        constexpr char fmt[] = "%s::%s[%s]: tx_semaphore_info_get() = 0x%02x";
+        LIBSMART_HANDLE_ERROR(fmt, COMPONENT_NAME, CLASS_NAME, getName(), ret);
     }
     return ret;
 }
@@ -122,43 +118,40 @@ UINT BaseSemaphore::performance_system_info_get(ULONG *puts, ULONG *gets, ULONG 
 #endif
 
 UINT BaseSemaphore::prioritize() {
-    log(Stm32ItmLogger::LoggerInterface::Severity::DEBUGGING)
-            ->printf("Stm32ThreadX::BaseSemaphore[%s]::prioritize()\r\n", getName());
+    log(Severity::DEBUGGING)->printf("%s::%s[%s]::prioritize()\r\n", COMPONENT_NAME, CLASS_NAME, getName());
 
     // @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_semaphore_prioritize
     const auto ret = tx_semaphore_prioritize(this);
 
     if (ret != TX_SUCCESS) {
-        constexpr char fmt[] = "Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_prioritize() = 0x%02x";
-        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
+        constexpr char fmt[] = "%s::%s[%s]: tx_semaphore_prioritize() = 0x%02x";
+        LIBSMART_HANDLE_ERROR(fmt, COMPONENT_NAME, CLASS_NAME, getName(), ret);
     }
     return ret;
 }
 
 UINT BaseSemaphore::put() {
-    log(Stm32ItmLogger::LoggerInterface::Severity::DEBUGGING)
-            ->printf("Stm32ThreadX::BaseSemaphore[%s]::put()\r\n", getName());
+    log(Severity::DEBUGGING)->printf("%s::%s[%s]::put()\r\n", COMPONENT_NAME, CLASS_NAME, getName());
 
     // @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_semaphore_put
     const auto ret = tx_semaphore_put(this);
 
     if (ret != TX_SUCCESS) {
-        constexpr char fmt[] = "Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_put() = 0x%02x";
-        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
+        constexpr char fmt[] = "%s::%s[%s]: tx_semaphore_put() = 0x%02x";
+        LIBSMART_HANDLE_ERROR(fmt, COMPONENT_NAME, CLASS_NAME, getName(), ret);
     }
     return ret;
 }
 
 UINT BaseSemaphore::put_notify(semaphore_put_notify_callback semaphore_put_notify) {
-    log(Stm32ItmLogger::LoggerInterface::Severity::DEBUGGING)
-            ->printf("Stm32ThreadX::BaseSemaphore[%s]::put_notify()\r\n", getName());
+    log(Severity::DEBUGGING)->printf("%s::%s[%s]::put_notify()\r\n", COMPONENT_NAME, CLASS_NAME, getName());
 
     // @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_semaphore_put_notify
     const auto ret = tx_semaphore_put_notify(this, semaphore_put_notify);
 
     if (ret != TX_SUCCESS) {
-        constexpr char fmt[] = "Stm32ThreadX::BaseSemaphore[%s]: tx_semaphore_put_notify() = 0x%02x";
-        LIBSMART_HANDLE_ERROR(fmt, getName(), ret);
+        constexpr char fmt[] = "%s::%s[%s]: tx_semaphore_put_notify() = 0x%02x";
+        LIBSMART_HANDLE_ERROR(fmt, COMPONENT_NAME, CLASS_NAME, getName(), ret);
     }
     return ret;
 }

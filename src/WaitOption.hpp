@@ -1,12 +1,13 @@
 /*
- * SPDX-FileCopyrightText: 2024 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
+ * SPDX-FileCopyrightText: 2026 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#ifndef LIBSMART_STM32THREADX_WAITOPTION_HPP
-#define LIBSMART_STM32THREADX_WAITOPTION_HPP
+#pragma once
 
+extern "C" {
 #include "tx_api.h"
+}
 
 namespace Stm32ThreadX {
     class WaitOption {
@@ -30,4 +31,3 @@ namespace Stm32ThreadX {
         ULONG value = WAIT_FOREVER;
     };
 }
-#endif //LIBSMART_STM32THREADX_WAITOPTION_HPP

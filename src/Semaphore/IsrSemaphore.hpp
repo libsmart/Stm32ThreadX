@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2025 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
+ * SPDX-FileCopyrightText: 2026 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
@@ -9,11 +9,15 @@
 #include "Callback/CallbackCapable.hpp"
 #include "Process/ProcessInterface.hpp"
 
-using namespace Stm32Common;
-
 namespace Stm32ThreadX {
-    class IsrSemaphore : Process::ProcessInterface, public Nameable, public CallbackCapable<void> {
+    class IsrSemaphore : Stm32Common::Process::ProcessInterface,
+                         public Stm32Common::Nameable,
+                         public Stm32Common::CallbackCapable<void> {
     public:
+        static constexpr const char *COMPONENT_NAME = Stm32ThreadX::COMPONENT_NAME;
+        static constexpr char CLASS_NAME[] = "IsrSemaphore";
+        const char *INSTANCE_NAME{getName()};
+
         IsrSemaphore() = delete;
 
         explicit IsrSemaphore(const char *name) : Nameable(name) { ; }
@@ -35,7 +39,5 @@ namespace Stm32ThreadX {
         void callback() override;
 
         Semaphore semaphore{};
-
-        static constexpr char defaultName[] = "IsrSemaphore";
     };
 }

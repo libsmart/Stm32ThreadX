@@ -1,8 +1,8 @@
 /*
- * SPDX-FileCopyrightText: 2024 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
+ * SPDX-FileCopyrightText: 2026 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
  * SPDX-License-Identifier: BSD-3-Clause
  *
- * Copyright (c) 2024 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
+ * Copyright (c) 2026 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
  *
  * This file is part of libsmart/Stm32ThreadxThread, which is distributed under the terms
  * of the BSD 3-Clause License. You should have received a copy of the BSD 3-Clause
@@ -25,8 +25,11 @@
 #include <libsmart_config.hpp>
 #include <cstdint>
 #include <type_traits>
-#include "tx_api.h"
 #include "TickTimer.hpp"
+
+extern "C" {
+#include "tx_api.h"
+}
 
 namespace Stm32ThreadX {
     /**
@@ -252,23 +255,23 @@ namespace Stm32ThreadX {
 
 #ifndef TX_DISABLE_NOTIFY_CALLBACKS
 
-        private:
-            using entry_exit_callback = void (*)(thread*, native::UINT id);
+    private:
+        using entry_exit_callback = void (*)(thread *, native::UINT id);
 
-            void set_entry_exit_callback(entry_exit_callback func, void* param);
-            entry_exit_callback get_entry_exit_callback() const;
-            void* get_entry_exit_param() const;
-            static void join_exit_callback(thread *t, native::UINT id);
+        void set_entry_exit_callback(entry_exit_callback func, void *param);
+        entry_exit_callback get_entry_exit_callback() const;
+        void *get_entry_exit_param() const;
+        static void join_exit_callback(thread *t, native::UINT id);
 
-        public:
-            /// @brief  Waits for the thread to finish execution.
-            /// @note   May only be called when the thread is joinable, and not from the owned thread's context
-            void join();
+    public:
+        /// @brief  Waits for the thread to finish execution.
+        /// @note   May only be called when the thread is joinable, and not from the owned thread's context
+        void join();
 
-            /// @brief  Checks if the thread is joinable (potentially executing).
-            /// @return true if the thread is valid and hasn't been joined, false otherwise
-            /// @remark Thread and ISR context callable
-            bool joinable() const;
+        /// @brief  Checks if the thread is joinable (potentially executing).
+        /// @return true if the thread is valid and hasn't been joined, false otherwise
+        /// @remark Thread and ISR context callable
+        bool joinable() const;
 
 #endif // !TX_DISABLE_NOTIFY_CALLBACKS
 
@@ -472,13 +475,13 @@ namespace Stm32ThreadX {
 
 #if 0 && (configUSE_TASK_NOTIFICATIONS == 1)
 
-        bool notify_wait_for(const tick_timer::duration& rel_time,
-                    Thread::notify_flag clr_at_entry = 0, thread::notify_flag clr_at_exit = 0,
-                    Thread::notify_flag *received = nullptr);
+        bool notify_wait_for(const tick_timer::duration &rel_time,
+                             Thread::notify_flag clr_at_entry = 0, thread::notify_flag clr_at_exit = 0,
+                             Thread::notify_flag *received = nullptr);
 
-            notify_value notify_value_wait_for(const tick_timer::duration& rel_time,
-                    Thread::notify_flag clr_at_entry = 0, thread::notify_flag clr_at_exit = 0,
-                    Thread::notify_flag *received = nullptr);
+        notify_value notify_value_wait_for(const tick_timer::duration &rel_time,
+                                           Thread::notify_flag clr_at_entry = 0, thread::notify_flag clr_at_exit = 0,
+                                           Thread::notify_flag *received = nullptr);
 
 #endif // (configUSE_TASK_NOTIFICATIONS == 1)
     }

@@ -1,11 +1,12 @@
 /*
- * SPDX-FileCopyrightText: 2025 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
+ * SPDX-FileCopyrightText: 2026 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
 #include "IsrSemaphore.hpp"
 
 using namespace Stm32ThreadX;
+using Severity = Stm32ItmLogger::LoggerInterface::Severity;
 
 UINT IsrSemaphore::get(const ULONG wait_option) {
     return semaphore.get(wait_option);
@@ -24,7 +25,7 @@ void IsrSemaphore::end() {
 void IsrSemaphore::errorHandler() { ; }
 
 const char *IsrSemaphore::getDefaultName() const {
-    return defaultName;
+    return CLASS_NAME;
 }
 
 void IsrSemaphore::callback() {

@@ -1,11 +1,12 @@
 /*
- * SPDX-FileCopyrightText: 2024 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
+ * SPDX-FileCopyrightText: 2026 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
 #include "Queue.hpp"
 
 using namespace Stm32ThreadX;
+using Severity = Stm32ItmLogger::LoggerInterface::Severity;
 
 UINT Queue::create(UINT message_size) {
     return create(getNameNonConst(), message_size, queueMem, queueMemSize);

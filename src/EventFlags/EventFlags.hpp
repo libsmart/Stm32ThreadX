@@ -1,17 +1,17 @@
 /*
- * SPDX-FileCopyrightText: 2024 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
+ * SPDX-FileCopyrightText: 2026 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#ifndef LIBSMART_STM32THREADX_EVENTFLAGS_HPP
-#define LIBSMART_STM32THREADX_EVENTFLAGS_HPP
+#pragma once
 
-#include <limits.h>
 #include <libsmart_config.hpp>
 #include "Loggable.hpp"
-#include "Nameable.hpp"
-#include "tx_api.h"
 #include "BaseEventFlags.hpp"
+
+extern "C" {
+#include <limits.h>
+}
 
 namespace Stm32ThreadX {
     /**
@@ -25,6 +25,10 @@ namespace Stm32ThreadX {
      */
     class EventFlags : public BaseEventFlags {
     public:
+        static constexpr const char *COMPONENT_NAME = Stm32ThreadX::COMPONENT_NAME;
+        static constexpr char CLASS_NAME[] = "EventFlags";
+        const char *INSTANCE_NAME{getName()};
+
         EventFlags() = default;
 
         explicit EventFlags(Stm32ItmLogger::LoggerInterface *logger)
@@ -336,5 +340,3 @@ namespace Stm32ThreadX {
         ULONG actualFlags = {};
     };
 }
-
-#endif //LIBSMART_STM32THREADX_EVENTFLAGS_HPP

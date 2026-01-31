@@ -1,8 +1,8 @@
 /*
- * SPDX-FileCopyrightText: 2024 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
+ * SPDX-FileCopyrightText: 2026 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
  * SPDX-License-Identifier: BSD-3-Clause
  *
- * Copyright (c) 2024 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
+ * Copyright (c) 2026 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
  *
  * This file is part of libsmart/Stm32ThreadxThread, which is distributed under the terms
  * of the BSD 3-Clause License. You should have received a copy of the BSD 3-Clause

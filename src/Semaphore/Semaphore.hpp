@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
+ * SPDX-FileCopyrightText: 2026 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
@@ -10,6 +10,10 @@
 namespace Stm32ThreadX {
     class Semaphore : public BaseSemaphore {
     public:
+        static constexpr const char *COMPONENT_NAME = Stm32ThreadX::COMPONENT_NAME;
+        static constexpr char CLASS_NAME[] = "Semaphore";
+        const char *INSTANCE_NAME{getName()};
+
         Semaphore() = default;
 
         explicit Semaphore(const char *name)

@@ -1,19 +1,26 @@
 /*
- * SPDX-FileCopyrightText: 2024 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
+ * SPDX-FileCopyrightText: 2026 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#ifndef LIBSMART_STM32THREADX_BYTEPOOL_HPP
-#define LIBSMART_STM32THREADX_BYTEPOOL_HPP
+#pragma once
 
 #include <libsmart_config.hpp>
 #include "Loggable.hpp"
 #include "Nameable.hpp"
+#include "Stm32ThreadX.hpp"
+
+extern "C" {
 #include "tx_api.h"
+}
 
 namespace Stm32ThreadX {
     class BytePool : public Stm32ItmLogger::Loggable, public Stm32Common::Nameable {
     public:
+        static constexpr const char *COMPONENT_NAME = Stm32ThreadX::COMPONENT_NAME;
+        static constexpr char CLASS_NAME[] = "BytePool";
+        const char *INSTANCE_NAME{getName()};
+
         BytePool() = default;
 
         explicit BytePool(TX_BYTE_POOL *txBytePool)
@@ -45,4 +52,3 @@ namespace Stm32ThreadX {
         TX_BYTE_POOL *bytePool = {};
     };
 }
-#endif //LIBSMART_STM32THREADX_BYTEPOOL_HPP

@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
+ * SPDX-FileCopyrightText: 2026 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
@@ -9,6 +9,7 @@
 #endif
 
 using namespace Stm32ThreadX;
+using Severity = Stm32ItmLogger::LoggerInterface::Severity;
 
 UINT EventFlags::create() {
     return BaseEventFlags::create(getNameNonConst());
@@ -25,7 +26,8 @@ UINT EventFlags::get(const ULONG requestedFlags, getOption_t getOption, waitOpti
 
 UINT EventFlags::get(ULONG requestedFlags, getOption_t getOption, ULONG &actualFlagsRef, waitOption_t waitOption) {
     actualFlags = 0;
-    const auto ret = BaseEventFlags::get(requestedFlags, static_cast<UINT>(getOption), &actualFlags, waitOption.timeout);
+    const auto ret = BaseEventFlags::get(requestedFlags, static_cast<UINT>(getOption), &actualFlags,
+                                         waitOption.timeout);
     actualFlagsRef = actualFlags;
     return ret;
 }
@@ -64,8 +66,8 @@ UINT EventFlags::await(const ULONG requestedFlags, const getOption_t getOption) 
 }
 
 UINT EventFlags::await(const ULONG requestedFlags, const getOption_t getOption, const waitOption_t waitOption) {
-    log(Stm32ItmLogger::LoggerInterface::Severity::DEBUGGING)
-            ->printf("Stm32ThreadX::EventFlags[%s]::await(0x%08x)\r\n", getName(), requestedFlags);
+    log(Severity::DEBUGGING)->printf("%s::%s[%s]::await(0x%08x)\r\n", COMPONENT_NAME, CLASS_NAME, getName(),
+                                     requestedFlags);
 
     return get(requestedFlags, getOption, waitOption);
 }

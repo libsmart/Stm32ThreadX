@@ -29,6 +29,8 @@ extern "C" {
 }
 
 namespace Stm32ThreadX {
+    constexpr char COMPONENT_NAME[] = "Stm32ThreadX";
+
     /**
      * @brief Executes the provided callable object within a critical section.
      *

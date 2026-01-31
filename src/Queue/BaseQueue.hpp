@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
+ * SPDX-FileCopyrightText: 2026 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
@@ -7,11 +7,19 @@
 
 #include "Loggable.hpp"
 #include "Nameable.hpp"
+#include "Stm32ThreadX.hpp"
+
+extern "C" {
 #include "tx_api.h"
+}
 
 namespace Stm32ThreadX {
     class BaseQueue : protected TX_QUEUE, public Stm32ItmLogger::Loggable, public Stm32Common::Nameable {
     public:
+        static constexpr const char *COMPONENT_NAME = Stm32ThreadX::COMPONENT_NAME;
+        static constexpr char CLASS_NAME[] = "BaseQueue";
+        const char *INSTANCE_NAME{getName()};
+
         BaseQueue() : BaseQueue(&Stm32ItmLogger::emptyLogger) { ; }
 
         explicit BaseQueue(const char *name)
@@ -33,7 +41,7 @@ namespace Stm32ThreadX {
          *
          * @return No return value, as the copy constructor is deleted.
          */
-        BaseQueue(const BaseQueue&) = delete;
+        BaseQueue(const BaseQueue &) = delete;
 
         /**
          * @brief Deleted copy assignment operator to prevent assigning a BaseQueue instance.
@@ -45,7 +53,7 @@ namespace Stm32ThreadX {
          *
          * @return No return value, as the assignment operator is deleted.
          */
-        BaseQueue& operator=(const BaseQueue&) = delete;
+        BaseQueue &operator=(const BaseQueue &) = delete;
 
         /**
          * @brief Creates a new queue with the specified parameters.

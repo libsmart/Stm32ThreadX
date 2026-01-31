@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2024 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
+ * SPDX-FileCopyrightText: 2026 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
@@ -7,11 +7,19 @@
 
 #include "Loggable.hpp"
 #include "Nameable.hpp"
+#include "Stm32ThreadX.hpp"
+
+extern "C" {
 #include "tx_api.h"
+}
 
 namespace Stm32ThreadX {
     class BaseSemaphore : protected TX_SEMAPHORE, public Stm32ItmLogger::Loggable, public Stm32Common::Nameable {
     public:
+        static constexpr const char *COMPONENT_NAME = Stm32ThreadX::COMPONENT_NAME;
+        static constexpr char CLASS_NAME[] = "BaseSemaphore";
+        const char *INSTANCE_NAME{getName()};
+
         BaseSemaphore() : BaseSemaphore(&Stm32ItmLogger::emptyLogger) { ; }
 
         explicit BaseSemaphore(const char *name)
