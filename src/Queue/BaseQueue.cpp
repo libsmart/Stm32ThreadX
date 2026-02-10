@@ -183,7 +183,8 @@ UINT BaseQueue::receive(void *destination_ptr, ULONG wait_option) {
 }
 
 UINT BaseQueue::send(void *source_ptr, ULONG wait_option) {
-    log(Severity::DEBUGGING)->printf("%s::%s[%s]::send(%p, %lu)\r\n", getName(), source_ptr, wait_option);
+    log(Severity::DEBUGGING)->printf("%s::%s[%s]::send(%p, %lu)\r\n", COMPONENT_NAME, CLASS_NAME, getName(),
+                                     source_ptr, wait_option);
 
     // @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_queue_send
     const auto ret = tx_queue_send(
@@ -200,7 +201,8 @@ UINT BaseQueue::send(void *source_ptr, ULONG wait_option) {
 }
 
 UINT BaseQueue::send_notify(send_notify_callback queue_send_notify) {
-    log(Severity::DEBUGGING)->printf("%s::%s[%s]::send(%p)\r\n", getName(), queue_send_notify);
+    log(Severity::DEBUGGING)->printf("%s::%s[%s]::send(%p)\r\n", COMPONENT_NAME, CLASS_NAME, getName(),
+                                     queue_send_notify);
 
     // @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_queue_send_notify
     const auto ret = tx_queue_send_notify(
