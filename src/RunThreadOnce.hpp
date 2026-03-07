@@ -1,8 +1,8 @@
 /*
- * SPDX-FileCopyrightText: 2024 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
+ * SPDX-FileCopyrightText: 2026 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
  * SPDX-License-Identifier: BSD-3-Clause
  *
- * Copyright (c) 2024 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
+ * Copyright (c) 2026 Roland Rusch, easy-smart solution GmbH <roland.rusch@easy-smart.ch>
  *
  * This file is part of libsmart/Stm32ThreadxThread, which is distributed under the terms
  * of the BSD 3-Clause License. You should have received a copy of the BSD 3-Clause
@@ -19,13 +19,8 @@
  * ----------------------------------------------------------------------------
  */
 
-#ifndef LIBSMART_STM32THREADX_RUNTHREAD_HPP
-#define LIBSMART_STM32THREADX_RUNTHREAD_HPP
+#pragma once
 
-#include <libsmart_config.hpp>
-#include <cstdint>
-#include <functional>
-#include "Helper.hpp"
 #include "RunOnce.hpp"
 #include "Stm32ThreadX.hpp"
 #include "Thread.hpp"
@@ -54,6 +49,17 @@ namespace Stm32ThreadX {
 
 #endif
 
+        /**
+         * @brief Resets the thread to its initial state.
+         *
+         * This method resets the underlying thread by calling the reset() method
+         * from the Thread base class. It allows the thread to be reinitialized
+         * and reused after it has completed execution or needs to be restarted.
+         */
+        void resetThread() {
+            Thread::reset();
+        }
+
     protected:
         void loopThread() {
             // tx_thread_sleep((_delay_ms * TX_TIMER_TICKS_PER_SECOND) / 1000);
@@ -61,9 +67,10 @@ namespace Stm32ThreadX {
                 loop();
                 // tx_thread_sleep(std::max((_interval_ms * TX_TIMER_TICKS_PER_SECOND) / 1000, 1UL));
                 tx_thread_sleep(1);
-            } while(_run_count < 1);
-            terminate();
+            } while (_run_count < 1);
+            // Do not terminate thread, as it is automatically completed
+            // TX_COMPLETED is better than TX_TERMINATED
+            // terminate();
         }
     };
 }
-#endif

@@ -32,7 +32,7 @@ void Thread::createThread() {
     // https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_thread_create
     assert_param(pstack != nullptr);
     assert_param(stack_size > 0);
-    const volatile auto result = tx_thread_create(
+    const auto result = tx_thread_create(
         this, // TX_THREAD *thread_ptr
         const_cast<char *>(threadName), // CHAR *name_ptr
         func, // VOID (*entry_function)(ULONG id)
@@ -71,35 +71,35 @@ void Thread::createAndResumeThread(void *stack, ULONG stackSize, const char *thr
 
 Thread::~Thread() {
     if (tx_thread_state != TX_COMPLETED) {
-        const volatile auto result = tx_thread_terminate(this);
+        const auto result = tx_thread_terminate(this);
         assert_param(result == TX_SUCCESS);
     }
-    const volatile auto result = tx_thread_delete(this);
+    const auto result = tx_thread_delete(this);
     assert_param(result == TX_SUCCESS);
 }
 
 
 void Thread::suspend() {
     // https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_thread_suspend
-    const volatile auto result = tx_thread_suspend(this);
+    const auto result = tx_thread_suspend(this);
     assert_param(result == TX_SUCCESS);
 }
 
 void Thread::resume() {
     // https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_thread_resume
-    const volatile auto result = tx_thread_resume(this);
+    const auto result = tx_thread_resume(this);
     assert_param(result == TX_SUCCESS);
 }
 
 void Thread::terminate() {
     // https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_thread_terminate
-    const volatile auto result = tx_thread_terminate(this);
+    const auto result = tx_thread_terminate(this);
     assert_param(result == TX_SUCCESS);
 }
 
 void Thread::reset() {
     // https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_thread_reset
-    const volatile auto result = tx_thread_reset(this);
+    const auto result = tx_thread_reset(this);
     assert_param(result == TX_SUCCESS);
 }
 
