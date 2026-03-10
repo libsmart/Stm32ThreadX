@@ -21,9 +21,7 @@
 
 #include <cassert>
 #include "Thread.hpp"
-
 #include "globals.hpp"
-#include "main.hpp"
 
 using namespace Stm32ThreadX;
 using namespace Stm32ThreadX::native;
@@ -32,7 +30,7 @@ void Thread::createThread() {
     // https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_thread_create
     assert_param(pstack != nullptr);
     assert_param(stack_size > 0);
-    const auto result = tx_thread_create(
+    volatile const auto result = tx_thread_create(
         this, // TX_THREAD *thread_ptr
         const_cast<char *>(threadName), // CHAR *name_ptr
         func, // VOID (*entry_function)(ULONG id)
@@ -109,6 +107,8 @@ Thread::priority Thread::getPriority() const {
 
 void Thread::setPriority(priority prio) {
     priority::value_type old_prio;
+    this->prio = prio;
+    this->prio_preempt = std::min(prio, this->prio_preempt);
     tx_thread_priority_change(this, prio, &old_prio);
 }
 
