@@ -43,5 +43,7 @@ namespace Stm32ThreadX {
             : BaseSemaphore(name, logger) {
             BaseSemaphore::create(Nameable::getNameNonConst(), initial_count);
         }
+
+        bool isCreated() const;
     };
 }

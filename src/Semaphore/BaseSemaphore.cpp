@@ -23,6 +23,9 @@ UINT BaseSemaphore::create(const std::string_view name, ULONG initial_count) {
         constexpr char fmt[] = "%s::%s[%s]: tx_semaphore_create() = 0x%02x";
         LIBSMART_HANDLE_ERROR(fmt, COMPONENT_NAME, CLASS_NAME, getName(), ret);
     }
+
+    created = true;
+
     return ret;
 }
 
@@ -32,6 +35,8 @@ UINT BaseSemaphore::create(const std::string_view name) {
 
 UINT BaseSemaphore::del() {
     log(Severity::DEBUGGING)->printf("%s::%s[%s]::del()\r\n", COMPONENT_NAME, CLASS_NAME, getName());
+
+    created = false;
 
     // @see https://github.com/eclipse-threadx/rtos-docs/blob/main/rtos-docs/threadx/chapter4.md#tx_semaphore_delete
     const auto ret = tx_semaphore_delete(this);

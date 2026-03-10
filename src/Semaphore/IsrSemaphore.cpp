@@ -29,5 +29,5 @@ const char *IsrSemaphore::getDefaultName() const {
 }
 
 void IsrSemaphore::callback() {
-    semaphore.put();
+    if (semaphore.isCreated()) semaphore.put();
 }

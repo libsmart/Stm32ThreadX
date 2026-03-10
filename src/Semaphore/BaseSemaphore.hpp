@@ -190,5 +190,8 @@ namespace Stm32ThreadX {
          *         Returns NX_SUCCESS if the callback is successfully registered, otherwise an error code.
          */
         virtual UINT put_notify(semaphore_put_notify_callback semaphore_put_notify);
+
+    protected:
+        bool created = false;
     };
 }

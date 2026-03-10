@@ -7,3 +7,7 @@
 
 using namespace Stm32ThreadX;
 using Severity = Stm32ItmLogger::LoggerInterface::Severity;
+
+bool Semaphore::isCreated() const {
+    return created;
+}
